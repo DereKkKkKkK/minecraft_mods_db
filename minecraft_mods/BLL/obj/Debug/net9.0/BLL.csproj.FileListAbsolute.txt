@@ -1,0 +1,34 @@
+/Users/nborisnboris/RiderProjects/LibraryAPI_2025/BLL/bin/Debug/net9.0/BLL.deps.json
+/Users/nborisnboris/RiderProjects/LibraryAPI_2025/BLL/bin/Debug/net9.0/BLL.dll
+/Users/nborisnboris/RiderProjects/LibraryAPI_2025/BLL/bin/Debug/net9.0/BLL.pdb
+/Users/nborisnboris/RiderProjects/LibraryAPI_2025/BLL/bin/Debug/net9.0/DAL.dll
+/Users/nborisnboris/RiderProjects/LibraryAPI_2025/BLL/bin/Debug/net9.0/DTO.dll
+/Users/nborisnboris/RiderProjects/LibraryAPI_2025/BLL/bin/Debug/net9.0/DAL.pdb
+/Users/nborisnboris/RiderProjects/LibraryAPI_2025/BLL/bin/Debug/net9.0/DTO.pdb
+/Users/nborisnboris/RiderProjects/LibraryAPI_2025/BLL/obj/Debug/net9.0/BLL.csproj.AssemblyReference.cache
+/Users/nborisnboris/RiderProjects/LibraryAPI_2025/BLL/obj/Debug/net9.0/BLL.GeneratedMSBuildEditorConfig.editorconfig
+/Users/nborisnboris/RiderProjects/LibraryAPI_2025/BLL/obj/Debug/net9.0/BLL.AssemblyInfoInputs.cache
+/Users/nborisnboris/RiderProjects/LibraryAPI_2025/BLL/obj/Debug/net9.0/BLL.AssemblyInfo.cs
+/Users/nborisnboris/RiderProjects/LibraryAPI_2025/BLL/obj/Debug/net9.0/BLL.csproj.CoreCompileInputs.cache
+/Users/nborisnboris/RiderProjects/LibraryAPI_2025/BLL/obj/Debug/net9.0/BLL.csproj.Up2Date
+/Users/nborisnboris/RiderProjects/LibraryAPI_2025/BLL/obj/Debug/net9.0/BLL.dll
+/Users/nborisnboris/RiderProjects/LibraryAPI_2025/BLL/obj/Debug/net9.0/refint/BLL.dll
+/Users/nborisnboris/RiderProjects/LibraryAPI_2025/BLL/obj/Debug/net9.0/BLL.pdb
+/Users/nborisnboris/RiderProjects/LibraryAPI_2025/BLL/obj/Debug/net9.0/ref/BLL.dll
+E:\All Files\LibraryAPI_2025\LibraryAPI_2025\BLL\bin\Debug\net9.0\BLL.deps.json
+E:\All Files\LibraryAPI_2025\LibraryAPI_2025\BLL\bin\Debug\net9.0\BLL.dll
+E:\All Files\LibraryAPI_2025\LibraryAPI_2025\BLL\bin\Debug\net9.0\BLL.pdb
+E:\All Files\LibraryAPI_2025\LibraryAPI_2025\BLL\bin\Debug\net9.0\DAL.dll
+E:\All Files\LibraryAPI_2025\LibraryAPI_2025\BLL\bin\Debug\net9.0\DTO.dll
+E:\All Files\LibraryAPI_2025\LibraryAPI_2025\BLL\bin\Debug\net9.0\DAL.pdb
+E:\All Files\LibraryAPI_2025\LibraryAPI_2025\BLL\bin\Debug\net9.0\DTO.pdb
+E:\All Files\LibraryAPI_2025\LibraryAPI_2025\BLL\obj\Debug\net9.0\BLL.csproj.AssemblyReference.cache
+E:\All Files\LibraryAPI_2025\LibraryAPI_2025\BLL\obj\Debug\net9.0\BLL.GeneratedMSBuildEditorConfig.editorconfig
+E:\All Files\LibraryAPI_2025\LibraryAPI_2025\BLL\obj\Debug\net9.0\BLL.AssemblyInfoInputs.cache
+E:\All Files\LibraryAPI_2025\LibraryAPI_2025\BLL\obj\Debug\net9.0\BLL.AssemblyInfo.cs
+E:\All Files\LibraryAPI_2025\LibraryAPI_2025\BLL\obj\Debug\net9.0\BLL.csproj.CoreCompileInputs.cache
+E:\All Files\LibraryAPI_2025\LibraryAPI_2025\BLL\obj\Debug\net9.0\BLL.csproj.Up2Date
+E:\All Files\LibraryAPI_2025\LibraryAPI_2025\BLL\obj\Debug\net9.0\BLL.dll
+E:\All Files\LibraryAPI_2025\LibraryAPI_2025\BLL\obj\Debug\net9.0\refint\BLL.dll
+E:\All Files\LibraryAPI_2025\LibraryAPI_2025\BLL\obj\Debug\net9.0\BLL.pdb
+E:\All Files\LibraryAPI_2025\LibraryAPI_2025\BLL\obj\Debug\net9.0\ref\BLL.dll
