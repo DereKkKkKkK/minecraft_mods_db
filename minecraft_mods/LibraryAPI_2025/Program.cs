@@ -6,6 +6,7 @@ using DAL.Repositories;
 using DTO.Book;
 using DTO.Mod;
 using DTO.Tag;
+using DTO.ModVersion;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,12 +22,14 @@ builder.Services.AddDbContext<ApplicationContext>(options => options.UseNpgsql(c
 builder.Services.AddTransient<IRepository<BookDto, CreateBookDto, UpdateBookDto>, BookRepository>();
 builder.Services.AddTransient<IRepository<ModDto, CreateModDto, UpdateModDto>, ModRepository>();
 builder.Services.AddTransient<IRepository<TagDto, CreateTagDto, UpdateTagDto>, TagRepository>();
+builder.Services.AddTransient<IRepository<ModVersionDto, CreateModVersionDto, UpdateModVersionDto>, VersionRepository>();
 
 
 // Сервисы
 builder.Services.AddScoped<IService<BookDto, CreateBookDto, UpdateBookDto>, BookService>();
 builder.Services.AddScoped<IService<ModDto, CreateModDto, UpdateModDto>, ModService>();
 builder.Services.AddScoped<IService<TagDto, CreateTagDto, UpdateTagDto>, TagService>();
+builder.Services.AddTransient<IService<ModVersionDto, CreateModVersionDto, UpdateModVersionDto>, VersionService>();
 
 
 builder.Services.AddControllers();

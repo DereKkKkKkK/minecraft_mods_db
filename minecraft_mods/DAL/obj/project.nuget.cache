@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "wsuxlN+HgJA=",
+  "dgSpecHash": "1fzRv1vCCqE=",
   "success": true,
-  "projectFilePath": "E:\\All Files\\LibraryAPI_2025\\LibraryAPI_2025\\DAL\\DAL.csproj",
+  "projectFilePath": "E:\\All Files\\minecraft_mods_db\\minecraft_mods\\DAL\\DAL.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\dexal\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\dexal\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\7.0.0\\microsoft.bcl.asyncinterfaces.7.0.0.nupkg.sha512",

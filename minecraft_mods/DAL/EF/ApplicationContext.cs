@@ -8,6 +8,7 @@ public class ApplicationContext : DbContext
     public DbSet<Book> Books { get; set; }
     public DbSet<Mod> Mods { get; set; }
     public DbSet<Tag> Tags { get; set; }
+    public DbSet<ModVersion> ModVersions { get; set; }
 
     public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
     {
@@ -20,5 +21,6 @@ public class ApplicationContext : DbContext
         new BookMap(modelBuilder.Entity<Book>());
         new ModMap(modelBuilder.Entity<Mod>());
         new TagMap(modelBuilder.Entity<Tag>());
+        new VersionMap(modelBuilder.Entity<ModVersion>());
     }
 }

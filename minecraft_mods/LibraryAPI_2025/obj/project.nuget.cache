@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "503Vz2wU52I=",
+  "dgSpecHash": "8ITJx4VSKng=",
   "success": true,
-  "projectFilePath": "E:\\All Files\\LibraryAPI_2025\\LibraryAPI_2025\\LibraryAPI_2025\\LibraryAPI_2025.csproj",
+  "projectFilePath": "E:\\All Files\\minecraft_mods_db\\minecraft_mods\\LibraryAPI_2025\\LibraryAPI_2025.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\dexal\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\dexal\\.nuget\\packages\\microsoft.aspnetcore.openapi\\9.0.2\\microsoft.aspnetcore.openapi.9.0.2.nupkg.sha512",
