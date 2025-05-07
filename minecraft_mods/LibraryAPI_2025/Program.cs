@@ -4,7 +4,9 @@ using DAL.EF;
 using DAL.Interfaces;
 using DAL.Repositories;
 using DTO.Book;
+using DTO.Developer;
 using DTO.Mod;
+using DTO.ModLoader;
 using DTO.Tag;
 using DTO.ModVersion;
 using Microsoft.EntityFrameworkCore;
@@ -23,13 +25,17 @@ builder.Services.AddTransient<IRepository<BookDto, CreateBookDto, UpdateBookDto>
 builder.Services.AddTransient<IRepository<ModDto, CreateModDto, UpdateModDto>, ModRepository>();
 builder.Services.AddTransient<IRepository<TagDto, CreateTagDto, UpdateTagDto>, TagRepository>();
 builder.Services.AddTransient<IRepository<ModVersionDto, CreateModVersionDto, UpdateModVersionDto>, VersionRepository>();
+builder.Services.AddTransient<IRepository<ModLoaderDto, CreateModLoaderDto, UpdateModLoaderDto>, ModLoaderRepository>();
+builder.Services.AddTransient<IRepository<DeveloperDto, CreateDeveloperDto, UpdateDeveloperDto>, DeveloperRepository>();
 
 
 // Сервисы
 builder.Services.AddScoped<IService<BookDto, CreateBookDto, UpdateBookDto>, BookService>();
 builder.Services.AddScoped<IService<ModDto, CreateModDto, UpdateModDto>, ModService>();
 builder.Services.AddScoped<IService<TagDto, CreateTagDto, UpdateTagDto>, TagService>();
-builder.Services.AddTransient<IService<ModVersionDto, CreateModVersionDto, UpdateModVersionDto>, VersionService>();
+builder.Services.AddScoped<IService<ModVersionDto, CreateModVersionDto, UpdateModVersionDto>, VersionService>();
+builder.Services.AddScoped<IService<ModLoaderDto, CreateModLoaderDto, UpdateModLoaderDto>, ModLoaderService>();
+builder.Services.AddScoped<IService<DeveloperDto, CreateDeveloperDto, UpdateDeveloperDto>, DeveloperService>();
 
 
 builder.Services.AddControllers();

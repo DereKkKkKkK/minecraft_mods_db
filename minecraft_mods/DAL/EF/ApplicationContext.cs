@@ -9,6 +9,8 @@ public class ApplicationContext : DbContext
     public DbSet<Mod> Mods { get; set; }
     public DbSet<Tag> Tags { get; set; }
     public DbSet<ModVersion> ModVersions { get; set; }
+    public DbSet<ModLoader> ModLoaders { get; set; }
+    public DbSet<Developer> Developers { get; set; }
 
     public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
     {
@@ -22,5 +24,7 @@ public class ApplicationContext : DbContext
         new ModMap(modelBuilder.Entity<Mod>());
         new TagMap(modelBuilder.Entity<Tag>());
         new VersionMap(modelBuilder.Entity<ModVersion>());
+        new ModLoaderMap(modelBuilder.Entity<ModLoader>());
+        new DeveloperMap(modelBuilder.Entity<Developer>());
     }
 }

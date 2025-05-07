@@ -17,15 +17,15 @@ public class TagController(IService<TagDto, CreateTagDto, UpdateTagDto> service)
     
     
     [HttpPost]
-    public async Task<ActionResult<TagDto>> Create([FromBody] CreateTagDto mod) => Ok(await service.Create(mod));
+    public async Task<ActionResult<TagDto>> Create([FromBody] CreateTagDto tag) => Ok(await service.Create(tag));
     
     
     [HttpPut("{id}")]
-    public async Task<ActionResult<TagDto>> Update(Guid id, [FromBody] UpdateTagDto mod)
+    public async Task<ActionResult<TagDto>> Update(Guid id, [FromBody] UpdateTagDto tag)
     {
-        mod.Id = id;
+        tag.Id = id;
         
-        return Ok(await service.Update(mod));
+        return Ok(await service.Update(tag));
     }
     
     

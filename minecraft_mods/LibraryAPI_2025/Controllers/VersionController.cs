@@ -17,15 +17,15 @@ public class VersionController(IService<ModVersionDto, CreateModVersionDto, Upda
     
     
     [HttpPost]
-    public async Task<ActionResult<ModVersionDto>> Create([FromBody] CreateModVersionDto mod) => Ok(await service.Create(mod));
+    public async Task<ActionResult<ModVersionDto>> Create([FromBody] CreateModVersionDto version) => Ok(await service.Create(version));
     
     
     [HttpPut("{id}")]
-    public async Task<ActionResult<ModVersionDto>> Update(Guid id, [FromBody] UpdateModVersionDto mod)
+    public async Task<ActionResult<ModVersionDto>> Update(Guid id, [FromBody] UpdateModVersionDto version)
     {
-        mod.Id = id;
+        version.Id = id;
         
-        return Ok(await service.Update(mod));
+        return Ok(await service.Update(version));
     }
     
     
