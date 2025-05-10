@@ -6,6 +6,7 @@ using DAL.Repositories;
 using DTO.Book;
 using DTO.Collection;
 using DTO.Developer;
+using DTO.Focus;
 using DTO.Mod;
 using DTO.ModLoader;
 using DTO.Tag;
@@ -29,7 +30,7 @@ builder.Services.AddTransient<IRepository<ModVersionDto, CreateModVersionDto, Up
 builder.Services.AddTransient<IRepository<ModLoaderDto, CreateModLoaderDto, UpdateModLoaderDto>, ModLoaderRepository>();
 builder.Services.AddTransient<IRepository<DeveloperDto, CreateDeveloperDto, UpdateDeveloperDto>, DeveloperRepository>();
 builder.Services.AddTransient<IRepository<CollectionDto, CreateCollectionDto, UpdateCollectionDto>, CollectionRepository>();
-
+builder.Services.AddTransient<IRepository<FocusDto, CreateFocusDto, UpdateFocusDto>, FocusRepository>();
 
 // Сервисы
 builder.Services.AddScoped<IService<BookDto, CreateBookDto, UpdateBookDto>, BookService>();
@@ -39,6 +40,7 @@ builder.Services.AddScoped<IService<ModVersionDto, CreateModVersionDto, UpdateMo
 builder.Services.AddScoped<IService<ModLoaderDto, CreateModLoaderDto, UpdateModLoaderDto>, ModLoaderService>();
 builder.Services.AddScoped<IService<DeveloperDto, CreateDeveloperDto, UpdateDeveloperDto>, DeveloperService>();
 builder.Services.AddScoped<IService<CollectionDto, CreateCollectionDto, UpdateCollectionDto>, CollectionService>();
+builder.Services.AddScoped<IService<FocusDto, CreateFocusDto, UpdateFocusDto>, FocusService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
