@@ -12,6 +12,7 @@ public class ApplicationContext : DbContext
     public DbSet<ModLoader> ModLoaders { get; set; }
     public DbSet<Developer> Developers { get; set; }
     public DbSet<Collection> Collections { get; set; }
+    public DbSet<Difficulty> Difficulties { get; set; }
 
     public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
     {
@@ -28,5 +29,6 @@ public class ApplicationContext : DbContext
         new ModLoaderMap(modelBuilder.Entity<ModLoader>());
         new DeveloperMap(modelBuilder.Entity<Developer>());
         new CollectionMap(modelBuilder.Entity<Collection>());
+        new DifficultyMap(modelBuilder.Entity<Difficulty>());
     }
 }

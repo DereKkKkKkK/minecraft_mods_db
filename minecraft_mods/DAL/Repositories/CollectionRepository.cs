@@ -5,8 +5,7 @@ using DTO.Collection;
 using Microsoft.EntityFrameworkCore;
 namespace DAL.Repositories;
 
-public class CollectionRepository(ApplicationContext context)
-    : IRepository<CollectionDto, CreateCollectionDto, UpdateCollectionDto>
+public class CollectionRepository(ApplicationContext context) : IRepository<CollectionDto, CreateCollectionDto, UpdateCollectionDto>
 {
     public async Task<List<CollectionDto>> GetAll()
     {
