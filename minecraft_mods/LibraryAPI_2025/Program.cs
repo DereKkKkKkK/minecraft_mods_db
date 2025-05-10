@@ -4,6 +4,7 @@ using DAL.EF;
 using DAL.Interfaces;
 using DAL.Repositories;
 using DTO.Book;
+using DTO.Collection;
 using DTO.Developer;
 using DTO.Mod;
 using DTO.ModLoader;
@@ -27,6 +28,7 @@ builder.Services.AddTransient<IRepository<TagDto, CreateTagDto, UpdateTagDto>, T
 builder.Services.AddTransient<IRepository<ModVersionDto, CreateModVersionDto, UpdateModVersionDto>, VersionRepository>();
 builder.Services.AddTransient<IRepository<ModLoaderDto, CreateModLoaderDto, UpdateModLoaderDto>, ModLoaderRepository>();
 builder.Services.AddTransient<IRepository<DeveloperDto, CreateDeveloperDto, UpdateDeveloperDto>, DeveloperRepository>();
+builder.Services.AddTransient<IRepository<CollectionDto, CreateCollectionDto, UpdateCollectionDto>, CollectionRepository>();
 
 
 // Сервисы
@@ -36,7 +38,7 @@ builder.Services.AddScoped<IService<TagDto, CreateTagDto, UpdateTagDto>, TagServ
 builder.Services.AddScoped<IService<ModVersionDto, CreateModVersionDto, UpdateModVersionDto>, VersionService>();
 builder.Services.AddScoped<IService<ModLoaderDto, CreateModLoaderDto, UpdateModLoaderDto>, ModLoaderService>();
 builder.Services.AddScoped<IService<DeveloperDto, CreateDeveloperDto, UpdateDeveloperDto>, DeveloperService>();
-
+builder.Services.AddScoped<IService<CollectionDto, CreateCollectionDto, UpdateCollectionDto>, CollectionService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

@@ -11,6 +11,7 @@ public class ApplicationContext : DbContext
     public DbSet<ModVersion> ModVersions { get; set; }
     public DbSet<ModLoader> ModLoaders { get; set; }
     public DbSet<Developer> Developers { get; set; }
+    public DbSet<Collection> Collections { get; set; }
 
     public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
     {
@@ -26,5 +27,6 @@ public class ApplicationContext : DbContext
         new VersionMap(modelBuilder.Entity<ModVersion>());
         new ModLoaderMap(modelBuilder.Entity<ModLoader>());
         new DeveloperMap(modelBuilder.Entity<Developer>());
+        new CollectionMap(modelBuilder.Entity<Collection>());
     }
 }

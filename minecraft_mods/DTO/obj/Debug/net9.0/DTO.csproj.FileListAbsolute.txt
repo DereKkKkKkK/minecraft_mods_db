@@ -32,3 +32,15 @@ E:\All Files\minecraft_mods_db\minecraft_mods\DTO\obj\Debug\net9.0\DTO.dll
 E:\All Files\minecraft_mods_db\minecraft_mods\DTO\obj\Debug\net9.0\refint\DTO.dll
 E:\All Files\minecraft_mods_db\minecraft_mods\DTO\obj\Debug\net9.0\DTO.pdb
 E:\All Files\minecraft_mods_db\minecraft_mods\DTO\obj\Debug\net9.0\ref\DTO.dll
+C:\Users\kapi\Desktop\sosal\minecraft_mods_db\minecraft_mods\DTO\bin\Debug\net9.0\DTO.deps.json
+C:\Users\kapi\Desktop\sosal\minecraft_mods_db\minecraft_mods\DTO\bin\Debug\net9.0\DTO.dll
+C:\Users\kapi\Desktop\sosal\minecraft_mods_db\minecraft_mods\DTO\bin\Debug\net9.0\DTO.pdb
+C:\Users\kapi\Desktop\sosal\minecraft_mods_db\minecraft_mods\DTO\obj\Debug\net9.0\DTO.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\kapi\Desktop\sosal\minecraft_mods_db\minecraft_mods\DTO\obj\Debug\net9.0\DTO.AssemblyInfoInputs.cache
+C:\Users\kapi\Desktop\sosal\minecraft_mods_db\minecraft_mods\DTO\obj\Debug\net9.0\DTO.AssemblyInfo.cs
+C:\Users\kapi\Desktop\sosal\minecraft_mods_db\minecraft_mods\DTO\obj\Debug\net9.0\DTO.csproj.CoreCompileInputs.cache
+C:\Users\kapi\Desktop\sosal\minecraft_mods_db\minecraft_mods\DTO\obj\Debug\net9.0\DTO.sourcelink.json
+C:\Users\kapi\Desktop\sosal\minecraft_mods_db\minecraft_mods\DTO\obj\Debug\net9.0\DTO.dll
+C:\Users\kapi\Desktop\sosal\minecraft_mods_db\minecraft_mods\DTO\obj\Debug\net9.0\refint\DTO.dll
+C:\Users\kapi\Desktop\sosal\minecraft_mods_db\minecraft_mods\DTO\obj\Debug\net9.0\DTO.pdb
+C:\Users\kapi\Desktop\sosal\minecraft_mods_db\minecraft_mods\DTO\obj\Debug\net9.0\ref\DTO.dll
