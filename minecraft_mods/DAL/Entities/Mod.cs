@@ -7,11 +7,12 @@ public class Mod
     public Guid Id { get; set; }
     public string Title { get; set; } = "";
     public string Description { get; set; } = "";
-    public List<ModVersion> Versions { get; set; } = new();
-    public List<ModLoader> ModLoaders { get; set; } = new();
     public bool IsClientside { get; set; }
     public int Downloads { get; set; }
     public double Size { get; set; }
+    public List<ModVersion> Versions { get; set; } = new();
+    public List<ModLoader> ModLoaders { get; set; } = new();
+    public List<Tag> Tags { get; set; } = new();
 }
 
 
@@ -34,6 +35,11 @@ public class ModMap
         
         builder
             .HasMany(m => m.ModLoaders)
-            .WithMany(v => v.Mods);
+            .WithMany(l => l.Mods);
+        
+        
+        builder
+            .HasMany(m => m.Tags)
+            .WithMany(t => t.Mods);
     }
 }

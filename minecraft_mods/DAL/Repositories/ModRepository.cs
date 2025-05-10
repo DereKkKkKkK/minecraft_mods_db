@@ -4,6 +4,7 @@ using DAL.Interfaces;
 using DTO.Mod;
 using DTO.ModLoader;
 using DTO.ModVersion;
+using DTO.Tag;
 using Microsoft.EntityFrameworkCore;
 namespace DAL.Repositories;
 
@@ -14,6 +15,7 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
         List<Mod> mods = await context.Mods
             .Include(m => m.Versions)
             .Include(m => m.ModLoaders)
+            .Include(m => m.Tags)
             .ToListAsync();
 
 
@@ -22,6 +24,9 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
             Id = mod.Id,
             Title = mod.Title,
             Description = mod.Description,
+            IsClientside = mod.IsClientside,
+            Downloads = mod.Downloads,
+            Size = mod.Size,
             Versions = mod.Versions.Select(v => new ModVersionDto()
             {
                 Id = v.Id,
@@ -32,9 +37,11 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
                 Id = l.Id,
                 Title = l.Title,
             }).ToList(),
-            IsClientside = mod.IsClientside,
-            Downloads = mod.Downloads,
-            Size = mod.Size
+            Tags = mod.Tags.Select(t => new TagDto()
+            {
+                Id = t.Id,
+                Title = t.Title,
+            }).ToList()
         }).ToList();
     }
 
@@ -44,6 +51,7 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
         Mod? mod = await context.Mods
             .Include(m => m.Versions)
             .Include(m => m.ModLoaders)
+            .Include(m => m.Tags)
             .FirstOrDefaultAsync(m => m.Id == id);
 
 
@@ -52,6 +60,9 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
             Id = mod.Id,
             Title = mod.Title,
             Description = mod.Description,
+            IsClientside = mod.IsClientside,
+            Downloads = mod.Downloads,
+            Size = mod.Size,
             Versions = mod.Versions.Select(v => new ModVersionDto()
             {
                 Id = v.Id,
@@ -62,9 +73,11 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
                 Id = l.Id,
                 Title = l.Title,
             }).ToList(),
-            IsClientside = mod.IsClientside,
-            Downloads = mod.Downloads,
-            Size = mod.Size
+            Tags = mod.Tags.Select(t => new TagDto()
+            {
+                Id = t.Id,
+                Title = t.Title,
+            }).ToList()
         };
     }
 
@@ -81,12 +94,18 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
             .ToListAsync();
         
         
+        var tags = await context.Tags
+            .Where(t => mod.TagIds.Contains(t.Id))
+            .ToListAsync();
+        
+        
         Mod createdMod = new()
         {
             Title = mod.Title,
             Description = mod.Description,
             Versions = versions,
             ModLoaders = loaders,
+            Tags = tags,
             IsClientside = mod.IsClientside,
             Downloads = mod.Downloads,
             Size = mod.Size
@@ -100,6 +119,7 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
         createdMod = await context.Mods
             .Include(m => m.Versions)
             .Include(m => m.ModLoaders)
+            .Include(m => m.Tags)
             .FirstOrDefaultAsync(m => m.Id == createdMod.Id);
 
 
@@ -108,6 +128,9 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
             Id = createdMod.Id,
             Title = createdMod.Title,
             Description = createdMod.Description,
+            IsClientside = createdMod.IsClientside,
+            Downloads = createdMod.Downloads,
+            Size = createdMod.Size,
             Versions = createdMod.Versions.Select(v => new ModVersionDto()
             {
                 Id = v.Id,
@@ -118,9 +141,11 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
                 Id = l.Id,
                 Title = l.Title,
             }).ToList(),
-            IsClientside = createdMod.IsClientside,
-            Downloads = createdMod.Downloads,
-            Size = createdMod.Size
+            Tags = createdMod.Tags.Select(t => new TagDto()
+            {
+                Id = t.Id,
+                Title = t.Title,
+            }).ToList()
         };
     }
 
@@ -130,6 +155,7 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
         Mod? updatedMod = await context.Mods
             .Include(m => m.Versions)
             .Include(m => m.ModLoaders)
+            .Include(m => m.Tags)
             .FirstOrDefaultAsync(m => m.Id == mod.Id);
         
         
@@ -143,10 +169,16 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
             .ToListAsync();
         
         
+        var tags = await context.Tags
+            .Where(t => mod.TagIds.Contains(t.Id))
+            .ToListAsync();
+        
+        
         updatedMod.Title = mod.Title;
         updatedMod.Description = mod.Description;
         updatedMod.Versions = versions;
         updatedMod.ModLoaders = loaders;
+        updatedMod.Tags = tags;
         updatedMod.IsClientside = mod.IsClientside;
         updatedMod.Downloads = mod.Downloads;
         updatedMod.Size = mod.Size;
@@ -159,6 +191,7 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
         updatedMod = await context.Mods
             .Include(m => m.Versions)
             .Include(m => m.ModLoaders)
+            .Include(m => m.Tags)
             .FirstOrDefaultAsync(m => m.Id == mod.Id);
 
 
@@ -167,19 +200,24 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
             Id = updatedMod.Id,
             Title = updatedMod.Title,
             Description = updatedMod.Description,
-            Versions = updatedMod.Versions?.Select(v => new ModVersionDto()
+            IsClientside = updatedMod.IsClientside,
+            Downloads = updatedMod.Downloads,
+            Size = updatedMod.Size,
+            Versions = updatedMod.Versions.Select(v => new ModVersionDto()
             {
                 Id = v.Id,
                 Title = v.Title,
-            }).ToList() ?? new List<ModVersionDto>(),
+            }).ToList(),
             ModLoaders = updatedMod.ModLoaders.Select(l => new ModLoaderDto()
             {
                 Id = l.Id,
                 Title = l.Title,
-            }).ToList() ?? new List<ModLoaderDto>(),
-            IsClientside = updatedMod.IsClientside,
-            Downloads = updatedMod.Downloads,
-            Size = updatedMod.Size
+            }).ToList(),
+            Tags = updatedMod.Tags.Select(t => new TagDto()
+            {
+                Id = t.Id,
+                Title = t.Title,
+            }).ToList()
         };
     }
 
