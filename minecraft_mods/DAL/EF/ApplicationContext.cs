@@ -13,6 +13,7 @@ public class ApplicationContext : DbContext
     public DbSet<Developer> Developers { get; set; }
     public DbSet<Collection> Collections { get; set; }
     public DbSet<Difficulty> Difficulties { get; set; }
+    public DbSet<Focus> Focuses { get; set; }
 
     public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
     {
@@ -30,5 +31,6 @@ public class ApplicationContext : DbContext
         new DeveloperMap(modelBuilder.Entity<Developer>());
         new CollectionMap(modelBuilder.Entity<Collection>());
         new DifficultyMap(modelBuilder.Entity<Difficulty>());
+        new FocusMap(modelBuilder.Entity<Focus>());
     }
 }

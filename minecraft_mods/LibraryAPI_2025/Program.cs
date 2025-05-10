@@ -8,6 +8,7 @@ using DTO.Book;
 using DTO.Collection;
 using DTO.Developer;
 using DTO.Difficulty;
+using DTO.Focus;
 using DTO.Mod;
 using DTO.ModLoader;
 using DTO.Tag;
@@ -31,7 +32,8 @@ builder.Services.AddTransient<IRepository<ModVersionDto, CreateModVersionDto, Up
 builder.Services.AddTransient<IRepository<ModLoaderDto, CreateModLoaderDto, UpdateModLoaderDto>, ModLoaderRepository>();
 builder.Services.AddTransient<IRepository<DeveloperDto, CreateDeveloperDto, UpdateDeveloperDto>, DeveloperRepository>();
 builder.Services.AddTransient<IRepository<CollectionDto, CreateCollectionDto, UpdateCollectionDto>, CollectionRepository>();
-builder.Services.AddScoped<IRepository<DifficultyDto, CreateDifficultyDto, UpdateDifficultyDto>, DifficultyRepository>();
+builder.Services.AddTransient<IRepository<DifficultyDto, CreateDifficultyDto, UpdateDifficultyDto>, DifficultyRepository>();
+builder.Services.AddTransient<IRepository<FocusDto, CreateFocusDto, UpdateFocusDto>, FocusRepository>();
 
 
 // Сервисы
@@ -43,6 +45,7 @@ builder.Services.AddScoped<IService<ModLoaderDto, CreateModLoaderDto, UpdateModL
 builder.Services.AddScoped<IService<DeveloperDto, CreateDeveloperDto, UpdateDeveloperDto>, DeveloperService>();
 builder.Services.AddScoped<IService<CollectionDto, CreateCollectionDto, UpdateCollectionDto>, CollectionService>();
 builder.Services.AddScoped<IService<DifficultyDto, CreateDifficultyDto, UpdateDifficultyDto>, DifficultyService>();
+builder.Services.AddScoped<IService<FocusDto, CreateFocusDto, UpdateFocusDto>, FocusService>();
 
 
 builder.Services.AddControllers();
