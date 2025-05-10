@@ -1,10 +1,15 @@
-﻿namespace DTO.Mod;
+﻿using DTO.ModLoader;
+using DTO.ModVersion;
+
+namespace DTO.Mod;
 
 public class ModDto
 {
     public Guid Id { get; set; }
     public string Title { get; set; } = "";
     public string Description { get; set; } = "";
+    public List<ModVersionDto> Versions { get; set; } = new();
+    public List<ModLoaderDto> ModLoaders { get; set; } = new();
     public bool IsClientside { get; set; }
     public int Downloads { get; set; }
     public double Size { get; set; }

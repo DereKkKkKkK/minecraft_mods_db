@@ -6,6 +6,7 @@ public class ModLoader
 {
     public Guid Id { get; set; }
     public string Title { get; set; } = "";
+    public List<Mod> Mods { get; set; } = new();
 }
 
 
@@ -15,5 +16,10 @@ public class ModLoaderMap
     {
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Title).IsRequired();
+        
+        
+        builder
+            .HasMany(v => v.Mods)
+            .WithMany(m => m.ModLoaders);
     }
 }

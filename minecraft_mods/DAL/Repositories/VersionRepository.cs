@@ -46,7 +46,7 @@ public class VersionRepository(ApplicationContext context) : IRepository<ModVers
     {
         ModVersion createdVersion = new()
         {
-            Title = mod_version.Title,
+            Title = mod_version.Title
         };
         
         

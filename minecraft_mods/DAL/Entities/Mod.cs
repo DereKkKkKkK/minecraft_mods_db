@@ -7,6 +7,8 @@ public class Mod
     public Guid Id { get; set; }
     public string Title { get; set; } = "";
     public string Description { get; set; } = "";
+    public List<ModVersion> Versions { get; set; } = new();
+    public List<ModLoader> ModLoaders { get; set; } = new();
     public bool IsClientside { get; set; }
     public int Downloads { get; set; }
     public double Size { get; set; }
@@ -23,5 +25,15 @@ public class ModMap
         builder.Property(x => x.IsClientside).IsRequired();
         builder.Property(x => x.Downloads).IsRequired();
         builder.Property(x => x.Size).IsRequired();
+        
+        
+        builder
+            .HasMany(m => m.Versions)
+            .WithMany(v => v.Mods);
+        
+        
+        builder
+            .HasMany(m => m.ModLoaders)
+            .WithMany(v => v.Mods);
     }
 }
