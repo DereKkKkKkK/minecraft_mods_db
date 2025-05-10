@@ -9,13 +9,12 @@ public class FocusRepository(ApplicationContext context) : IRepository<FocusDto,
 {
     public async Task<List<FocusDto>> GetAll()
     {
-        List<Focus> focuses = await context.Focuses
-            .Include(f => f.ModLoader)
-            .ToListAsync();
+        List<Focus> focuses = await context.Focuses.ToListAsync();
+        List<FocusDto> focusList = new List<FocusDto>();
         
         
         
-        foreach (var focus in focusList)
+        foreach (var focus in focuses)
         {
             FocusDto FocusDto = new()
             {

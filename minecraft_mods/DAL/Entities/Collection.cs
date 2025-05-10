@@ -8,7 +8,10 @@ public class Collection
     public Guid Id { get; set; }
     public string Name { get; set; } = "";
     public int TimeToComplete { get; set; }
-    
+    public List<Mod> Mods { get; set; } = new();
+    public List<Focus> Focuses { get; set; } = new();
+    public ModVersion Version { get; set; }
+    public ModLoader ModLoader { get; set; }
 }
 
 public class CollectionMap
@@ -18,5 +21,8 @@ public class CollectionMap
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Name).IsRequired();
         builder.Property(x => x.TimeToComplete).IsRequired();
+        builder.HasMany(c => c.Mods).WithMany(m => m.Collections);
+        builder.HasMany(c => c.Focuses).WithMany(m => m.Collections);
+        builder.HasOne(c => c.Version).WithMany(v => v.Collections);
     }
 }

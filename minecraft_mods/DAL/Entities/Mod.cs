@@ -13,6 +13,7 @@ public class Mod
     public List<ModVersion> Versions { get; set; } = new();
     public List<ModLoader> ModLoaders { get; set; } = new();
     public List<Tag> Tags { get; set; } = new();
+    public List<Collection> Collections { get; set; } = new();
 }
 
 
