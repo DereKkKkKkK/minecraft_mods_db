@@ -1,4 +1,5 @@
-﻿using DTO.Focus;
+﻿using DTO.Difficulty;
+using DTO.Focus;
 using DTO.Mod;
 using DTO.ModLoader;
 using DTO.ModVersion;
@@ -14,5 +15,6 @@ public class CollectionDto
     public List<FocusDto> Focuses { get; set; } = new();
     public ModVersionDto Version { get; set; }
     public ModLoaderDto ModLoader { get; set; }
+    public DifficultyDto Difficulty { get; set; }
 }
     

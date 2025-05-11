@@ -2,6 +2,7 @@
 using DAL.Entities;
 using DAL.Interfaces;
 using DTO.Collection;
+using DTO.Difficulty;
 using DTO.Focus;
 using DTO.Mod;
 using DTO.ModLoader;
@@ -24,6 +25,7 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
             .Include(c => c.Focuses)
             .Include(c => c.Version)
             .Include(c => c.ModLoader)
+            .Include(c => c.Difficulty)
             .ToListAsync();
         return collections.Select(collection => new CollectionDto()
         {
@@ -69,6 +71,11 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
             {
                 Id = collection.ModLoader.Id,
                 Title = collection.ModLoader.Title
+            },
+            Difficulty = new DifficultyDto()
+            {
+                Id = collection.Difficulty.Id,
+                Title = collection.Difficulty.Title
             }
         }).ToList();
     }
@@ -86,6 +93,7 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
             .Include(c => c.Focuses)
             .Include(c => c.Version)
             .Include(c => c.ModLoader)
+            .Include(c => c.Difficulty)
             .FirstOrDefaultAsync(c => c.Id == id);
         
         return new CollectionDto()
@@ -132,6 +140,11 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
             {
                 Id = collection.Version.Id,
                 Title = collection.Version.Title
+            },
+            Difficulty = new DifficultyDto()
+            {
+                Id = collection.Difficulty.Id,
+                Title = collection.Difficulty.Title
             }
         };
     }
@@ -140,6 +153,9 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
     public async Task<CollectionDto> Create(CreateCollectionDto collection)
     {
         var mods = await context.Mods
+            .Include(m => m.Versions)
+            .Include(m => m.ModLoaders)
+            .Include(m => m.Tags)
             .Where(m => collection.ModsIds.Contains(m.Id))
             .ToListAsync();
         
@@ -148,9 +164,10 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
             .Where(f => collection.FocusesIds.Contains(f.Id))
             .ToListAsync();
         
+        
         var version = await context.ModVersions.FindAsync(collection.VersionId);
-    
         var modLoader = await context.ModLoaders.FindAsync(collection.ModLoaderId);
+        var difficulty = await context.Difficulties.FindAsync(collection.DifficultyId);
       
             
         
@@ -158,10 +175,11 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
         {
             Name = collection.Name,
             TimeToComplete = collection.TimeToComplete,
+            Mods = mods,
+            Focuses = focuses,
             Version = version,
             ModLoader = modLoader,
-            Mods = mods,
-            Focuses = focuses
+            Difficulty = difficulty
         };
 
 
@@ -210,8 +228,13 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
             },
             ModLoader = new ModLoaderDto()
             {
-                Id = createdCollection.Version.Id,
-                Title = createdCollection.Version.Title
+                Id = createdCollection.ModLoader.Id,
+                Title = createdCollection.ModLoader.Title
+            },
+            Difficulty = new DifficultyDto()
+            {
+                Id = createdCollection.Difficulty.Id,
+                Title = createdCollection.Difficulty.Title
             }
         };
     }
@@ -229,6 +252,7 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
             .Include(c => c.Focuses)
             .Include(c => c.Version)
             .Include(c => c.ModLoader)
+            .Include(c => c.Difficulty)
             .FirstOrDefaultAsync(c => c.Id == collection.Id);
 
         var mods = await context.Mods
@@ -240,9 +264,11 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
             .Where(f => collection.FocusesIds.Contains(f.Id))
             .ToListAsync();
         
+        
         var version = await context.ModVersions.FindAsync(collection.VersionId);
-    
         var modLoader = await context.ModLoaders.FindAsync(collection.ModLoaderId);
+        var difficulty = await context.Difficulties.FindAsync(collection.DifficultyId);
+        
         
         updatedCollection.Name = collection.Name;
         updatedCollection.TimeToComplete = collection.TimeToComplete;
@@ -250,6 +276,7 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
         updatedCollection.Focuses = focuses;
         updatedCollection.Version = version;
         updatedCollection.ModLoader = modLoader;
+        updatedCollection.Difficulty = difficulty;
         
         
         context.Collections.Update(updatedCollection);
@@ -299,6 +326,11 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
             {
                 Id = updatedCollection.Version.Id,
                 Title = updatedCollection.Version.Title
+            },
+            Difficulty = new DifficultyDto()
+            {
+                Id = updatedCollection.Difficulty.Id,
+                Title = updatedCollection.Difficulty.Title
             }
         };
     }

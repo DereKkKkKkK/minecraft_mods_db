@@ -8,4 +8,5 @@ public class CreateCollectionDto
     public List<Guid> FocusesIds { get; set; } = new();
     public Guid VersionId { get; set; }
     public Guid ModLoaderId { get; set; }
+    public Guid DifficultyId { get; set; }
 }
