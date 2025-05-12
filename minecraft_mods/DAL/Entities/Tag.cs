@@ -2,7 +2,7 @@
 
 namespace DAL.Entities;
 
-public class Tag
+public class Tag : BaseEntity
 {
     public Guid Id { get; set; }
     public string Title { get; set; } = "";

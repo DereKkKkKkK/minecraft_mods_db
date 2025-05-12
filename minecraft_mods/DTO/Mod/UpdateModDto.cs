@@ -11,4 +11,6 @@ public class UpdateModDto
     public List<Guid> VersionIds { get; set; } = new();
     public List<Guid> ModLoaderIds { get; set; } = new();
     public List<Guid> TagIds { get; set; } = new();
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 }

@@ -2,7 +2,7 @@
 
 namespace DAL.Entities;
 
-public class ModLoader
+public class ModLoader : BaseEntity
 {
     public Guid Id { get; set; }
     public string Title { get; set; } = "";

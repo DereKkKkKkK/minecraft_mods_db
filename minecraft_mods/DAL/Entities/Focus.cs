@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace DAL.Entities;
 
-public class Focus
+public class Focus : BaseEntity
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = "";

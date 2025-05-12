@@ -3,7 +3,7 @@
 namespace DAL.Entities;
 
 
-public class Difficulty
+public class Difficulty : BaseEntity
 {
     public Guid Id { get; set; }
     public string Title { get; set; } = "";

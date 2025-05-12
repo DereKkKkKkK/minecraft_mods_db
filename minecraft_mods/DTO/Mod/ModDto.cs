@@ -15,4 +15,6 @@ public class ModDto
     public List<ModVersionDto> Versions { get; set; } = new();
     public List<ModLoaderDto> ModLoaders { get; set; } = new();
     public List<TagDto> Tags { get; set; } = new();
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 }

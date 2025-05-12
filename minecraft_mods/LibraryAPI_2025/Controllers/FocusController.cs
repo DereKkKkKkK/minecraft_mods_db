@@ -8,7 +8,7 @@ namespace LibraryAPI_2025.Controllers;
 
 
 [ApiController]
-[Route("mods")]
+[Route("focuses")]
 public class FocusController(IService<FocusDto, CreateFocusDto, UpdateFocusDto> service) : ControllerBase
 {
     [HttpGet]

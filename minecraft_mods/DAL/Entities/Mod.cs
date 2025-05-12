@@ -2,7 +2,7 @@
 
 namespace DAL.Entities;
 
-public class Mod
+public class Mod : BaseEntity
 {
     public Guid Id { get; set; }
     public string Title { get; set; } = "";

@@ -2,12 +2,14 @@
 using DAL.Entities;
 using DAL.Interfaces;
 using DTO.Collection;
+using DTO.Difficulty;
 using DTO.Focus;
 using DTO.Mod;
 using DTO.ModLoader;
 using DTO.ModVersion;
 using DTO.Tag;
 using Microsoft.EntityFrameworkCore;
+
 namespace DAL.Repositories;
 
 public class CollectionRepository(ApplicationContext context) : IRepository<CollectionDto, CreateCollectionDto, UpdateCollectionDto>
@@ -16,16 +18,25 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
     {
         List<Collection> collections = await context.Collections
             .Include(c => c.Mods)
+                .ThenInclude(m => m.Versions)
+            .Include(c => c.Mods)
+                .ThenInclude(m => m.ModLoaders)
+            .Include(c => c.Mods)
+                .ThenInclude(m => m.Tags)
             .Include(c => c.Focuses)
             .Include(c => c.Version)
             .Include(c => c.ModLoader)
+            .Include(c => c.Difficulty)
             .ToListAsync();
+
         return collections.Select(collection => new CollectionDto()
         {
             Id = collection.Id,
             Name = collection.Name,
             TimeToComplete = collection.TimeToComplete,
-           
+            CreatedAt = collection.CreatedAt,
+            UpdatedAt = collection.UpdatedAt,
+            
             Mods = collection.Mods.Select(m => new ModDto()
             {
                 Id = m.Id,
@@ -42,40 +53,54 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
                 ModLoaders = m.ModLoaders.Select(l => new ModLoaderDto()
                 {
                     Id = l.Id,
-                    Title = l.Title,
+                    Title = l.Title
                 }).ToList(),
                 Tags = m.Tags.Select(t => new TagDto()
                 {
                     Id = t.Id,
-                    Title = t.Title,
-                }).ToList(),
+                    Title = t.Title
+                }).ToList()
             }).ToList(),
+            
             Focuses = collection.Focuses.Select(f => new FocusDto()
             {
                 Id = f.Id,
                 Name = f.Name,
             }).ToList(),
+            
             Version = new ModVersionDto()
             {
                 Id = collection.Version.Id,
                 Title = collection.Version.Title
             },
+            
             ModLoader = new ModLoaderDto()
             {
-                Id = collection.Version.Id,
-                Title = collection.Version.Title
+                Id = collection.ModLoader.Id,
+                Title = collection.ModLoader.Title
+            },
+            
+            Difficulty = new DifficultyDto()
+            {
+                Id = collection.Difficulty.Id,
+                Title = collection.Difficulty.Title
             }
         }).ToList();
     }
-
 
     public async Task<CollectionDto> GetById(Guid id)
     {
         Collection? collection = await context.Collections
             .Include(c => c.Mods)
+                .ThenInclude(m => m.Versions)
+            .Include(c => c.Mods)
+                .ThenInclude(m => m.ModLoaders)
+            .Include(c => c.Mods)
+                .ThenInclude(m => m.Tags)
             .Include(c => c.Focuses)
             .Include(c => c.Version)
             .Include(c => c.ModLoader)
+            .Include(c => c.Difficulty)
             .FirstOrDefaultAsync(c => c.Id == id);
         
         return new CollectionDto()
@@ -83,7 +108,9 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
             Id = collection.Id,
             Name = collection.Name,
             TimeToComplete = collection.TimeToComplete,
-           
+            CreatedAt = collection.CreatedAt,
+            UpdatedAt = collection.UpdatedAt,
+            
             Mods = collection.Mods.Select(m => new ModDto()
             {
                 Id = m.Id,
@@ -108,62 +135,74 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
                     Title = t.Title,
                 }).ToList(),
             }).ToList(),
+            
             Focuses = collection.Focuses.Select(f => new FocusDto()
             {
                 Id = f.Id,
                 Name = f.Name,
             }).ToList(),
+            
             Version = new ModVersionDto()
             {
                 Id = collection.Version.Id,
                 Title = collection.Version.Title
             },
+            
             ModLoader = new ModLoaderDto()
             {
-                Id = collection.Version.Id,
-                Title = collection.Version.Title
+                Id = collection.ModLoader.Id,
+                Title = collection.ModLoader.Title
+            },
+            
+            Difficulty = new DifficultyDto()
+            {
+                Id = collection.Difficulty.Id,
+                Title = collection.Difficulty.Title
             }
         };
     }
 
-
     public async Task<CollectionDto> Create(CreateCollectionDto collection)
     {
         var mods = await context.Mods
+            .Include(m => m.Versions)
+            .Include(m => m.ModLoaders)
+            .Include(m => m.Tags)
             .Where(m => collection.ModsIds.Contains(m.Id))
             .ToListAsync();
-        
         
         var focuses = await context.Focuses
             .Where(f => collection.FocusesIds.Contains(f.Id))
             .ToListAsync();
         
         var version = await context.ModVersions.FindAsync(collection.VersionId);
-    
         var modLoader = await context.ModLoaders.FindAsync(collection.ModLoaderId);
-      
-            
+        var difficulty = await context.Difficulties.FindAsync(collection.DifficultyId);
         
         Collection createdCollection = new()
         {
             Name = collection.Name,
             TimeToComplete = collection.TimeToComplete,
+            Mods = mods,
+            Focuses = focuses,
             Version = version,
             ModLoader = modLoader,
-            Mods = mods,
-            Focuses = focuses
+            Difficulty = difficulty,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
-
 
         context.Collections.Add(createdCollection);
         await context.SaveChangesAsync();
-
 
         return new CollectionDto()
         {
             Id = createdCollection.Id,
             Name = createdCollection.Name,
             TimeToComplete = createdCollection.TimeToComplete,
+            CreatedAt = createdCollection.CreatedAt,
+            UpdatedAt = createdCollection.UpdatedAt,
+            
             Mods = createdCollection.Mods.Select(m => new ModDto()
             {
                 Id = m.Id,
@@ -188,46 +227,59 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
                     Title = t.Title,
                 }).ToList(),
             }).ToList(),
+            
             Focuses = createdCollection.Focuses.Select(f => new FocusDto()
             {
                 Id = f.Id,
                 Name = f.Name,
             }).ToList(),
+            
             Version = new ModVersionDto()
             {
                 Id = createdCollection.Version.Id,
                 Title = createdCollection.Version.Title
             },
+            
             ModLoader = new ModLoaderDto()
             {
-                Id = createdCollection.Version.Id,
-                Title = createdCollection.Version.Title
+                Id = createdCollection.ModLoader.Id,
+                Title = createdCollection.ModLoader.Title
+            },
+            
+            Difficulty = new DifficultyDto()
+            {
+                Id = createdCollection.Difficulty.Id,
+                Title = createdCollection.Difficulty.Title
             }
         };
     }
-
 
     public async Task<CollectionDto> Update(UpdateCollectionDto collection)
     {
         Collection? updatedCollection = await context.Collections
             .Include(c => c.Mods)
+                .ThenInclude(m => m.Versions)
+            .Include(c => c.Mods)
+                .ThenInclude(m => m.ModLoaders)
+            .Include(c => c.Mods)
+                .ThenInclude(m => m.Tags)
             .Include(c => c.Focuses)
             .Include(c => c.Version)
             .Include(c => c.ModLoader)
+            .Include(c => c.Difficulty)
             .FirstOrDefaultAsync(c => c.Id == collection.Id);
 
         var mods = await context.Mods
             .Where(m => collection.ModsIds.Contains(m.Id))
             .ToListAsync();
         
-        
         var focuses = await context.Focuses
             .Where(f => collection.FocusesIds.Contains(f.Id))
             .ToListAsync();
         
         var version = await context.ModVersions.FindAsync(collection.VersionId);
-    
         var modLoader = await context.ModLoaders.FindAsync(collection.ModLoaderId);
+        var difficulty = await context.Difficulties.FindAsync(collection.DifficultyId);
         
         updatedCollection.Name = collection.Name;
         updatedCollection.TimeToComplete = collection.TimeToComplete;
@@ -235,17 +287,20 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
         updatedCollection.Focuses = focuses;
         updatedCollection.Version = version;
         updatedCollection.ModLoader = modLoader;
-        
+        updatedCollection.Difficulty = difficulty;
+        updatedCollection.UpdatedAt = DateTime.UtcNow;
         
         context.Collections.Update(updatedCollection);
         await context.SaveChangesAsync();
-
 
         return new CollectionDto()
         {
             Id = updatedCollection.Id,
             Name = updatedCollection.Name,
             TimeToComplete = updatedCollection.TimeToComplete,
+            CreatedAt = updatedCollection.CreatedAt,
+            UpdatedAt = updatedCollection.UpdatedAt,
+            
             Mods = updatedCollection.Mods.Select(m => new ModDto()
             {
                 Id = m.Id,
@@ -270,24 +325,32 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
                     Title = t.Title,
                 }).ToList(),
             }).ToList(),
+            
             Focuses = updatedCollection.Focuses.Select(f => new FocusDto()
             {
                 Id = f.Id,
                 Name = f.Name,
             }).ToList(),
+            
             Version = new ModVersionDto()
             {
                 Id = updatedCollection.Version.Id,
                 Title = updatedCollection.Version.Title
             },
+            
             ModLoader = new ModLoaderDto()
             {
-                Id = updatedCollection.Version.Id,
-                Title = updatedCollection.Version.Title
+                Id = updatedCollection.ModLoader.Id,
+                Title = updatedCollection.ModLoader.Title
+            },
+            
+            Difficulty = new DifficultyDto()
+            {
+                Id = updatedCollection.Difficulty.Id,
+                Title = updatedCollection.Difficulty.Title
             }
         };
     }
-
 
     public async Task Delete(Guid id)
     {

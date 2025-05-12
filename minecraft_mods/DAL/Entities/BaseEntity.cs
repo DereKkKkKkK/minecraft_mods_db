@@ -1,8 +1,7 @@
-﻿namespace DTO.Focus;
+﻿namespace DAL.Entities;
 
-public class CreateFocusDto
+public abstract class BaseEntity
 {
-    public string Name { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 }

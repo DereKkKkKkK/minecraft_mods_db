@@ -1,4 +1,6 @@
-﻿namespace DTO.Collection;
+﻿using DTO.Difficulty;
+
+namespace DTO.Collection;
 
 public class UpdateCollectionDto
 {
@@ -9,4 +11,7 @@ public class UpdateCollectionDto
     public List<Guid> FocusesIds { get; set; } = new();
     public Guid VersionId { get; set; }
     public Guid ModLoaderId { get; set; }
+    public Guid DifficultyId { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 }
