@@ -1,6 +1,5 @@
-using DTO.Book;
-
 namespace BLL.Interfaces;
+
 
 public interface IService<T, in TC, in TU>
 {

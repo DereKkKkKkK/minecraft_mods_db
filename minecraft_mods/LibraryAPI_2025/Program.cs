@@ -4,7 +4,6 @@ using DAL.EF;
 using DAL.Entities;
 using DAL.Interfaces;
 using DAL.Repositories;
-using DTO.Book;
 using DTO.Collection;
 using DTO.Developer;
 using DTO.Difficulty;
@@ -25,7 +24,6 @@ builder.Services.AddDbContext<ApplicationContext>(options => options.UseNpgsql(c
 
 
 // Репозитории
-builder.Services.AddTransient<IRepository<BookDto, CreateBookDto, UpdateBookDto>, BookRepository>();
 builder.Services.AddTransient<IRepository<ModDto, CreateModDto, UpdateModDto>, ModRepository>();
 builder.Services.AddTransient<IRepository<TagDto, CreateTagDto, UpdateTagDto>, TagRepository>();
 builder.Services.AddTransient<IRepository<ModVersionDto, CreateModVersionDto, UpdateModVersionDto>, VersionRepository>();
@@ -37,7 +35,6 @@ builder.Services.AddTransient<IRepository<FocusDto, CreateFocusDto, UpdateFocusD
 
 
 // Сервисы
-builder.Services.AddScoped<IService<BookDto, CreateBookDto, UpdateBookDto>, BookService>();
 builder.Services.AddScoped<IService<ModDto, CreateModDto, UpdateModDto>, ModService>();
 builder.Services.AddScoped<IService<TagDto, CreateTagDto, UpdateTagDto>, TagService>();
 builder.Services.AddScoped<IService<ModVersionDto, CreateModVersionDto, UpdateModVersionDto>, VersionService>();

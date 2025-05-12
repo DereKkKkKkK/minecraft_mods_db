@@ -1,5 +1,4 @@
 using DAL.Entities;
-using DTO.Book;
 namespace DAL.Interfaces;
 
 public interface IRepository<T, in TC, in TU>

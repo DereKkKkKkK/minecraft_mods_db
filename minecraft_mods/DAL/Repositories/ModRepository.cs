@@ -41,7 +41,9 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
             {
                 Id = t.Id,
                 Title = t.Title,
-            }).ToList()
+            }).ToList(),
+            CreatedAt = mod.CreatedAt,
+            UpdatedAt = mod.UpdatedAt
         }).ToList();
     }
 
@@ -77,7 +79,9 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
             {
                 Id = t.Id,
                 Title = t.Title,
-            }).ToList()
+            }).ToList(),
+            CreatedAt = mod.CreatedAt,
+            UpdatedAt = mod.UpdatedAt
         };
     }
 
@@ -108,7 +112,9 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
             Tags = tags,
             IsClientside = mod.IsClientside,
             Downloads = mod.Downloads,
-            Size = mod.Size
+            Size = mod.Size,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
         
         
@@ -145,7 +151,9 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
             {
                 Id = t.Id,
                 Title = t.Title,
-            }).ToList()
+            }).ToList(),
+            CreatedAt = createdMod.CreatedAt,
+            UpdatedAt = createdMod.UpdatedAt
         };
     }
 
@@ -182,6 +190,7 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
         updatedMod.IsClientside = mod.IsClientside;
         updatedMod.Downloads = mod.Downloads;
         updatedMod.Size = mod.Size;
+        updatedMod.UpdatedAt = DateTime.UtcNow;
         
         
         context.Mods.Update(updatedMod);
@@ -217,7 +226,9 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
             {
                 Id = t.Id,
                 Title = t.Title,
-            }).ToList()
+            }).ToList(),
+            CreatedAt = updatedMod.CreatedAt,
+            UpdatedAt = updatedMod.UpdatedAt
         };
     }
 

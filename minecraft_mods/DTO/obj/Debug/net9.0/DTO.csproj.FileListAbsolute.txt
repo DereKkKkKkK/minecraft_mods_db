@@ -68,3 +68,15 @@ E:\All Files\MinecraftRepo$\minecraft_mods_db\minecraft_mods\DTO\obj\Debug\net9.
 E:\All Files\MinecraftRepo$\minecraft_mods_db\minecraft_mods\DTO\obj\Debug\net9.0\refint\DTO.dll
 E:\All Files\MinecraftRepo$\minecraft_mods_db\minecraft_mods\DTO\obj\Debug\net9.0\DTO.pdb
 E:\All Files\MinecraftRepo$\minecraft_mods_db\minecraft_mods\DTO\obj\Debug\net9.0\ref\DTO.dll
+E:\All Files\minecraft_repos\minecraft_mods_db\minecraft_mods\DTO\bin\Debug\net9.0\DTO.deps.json
+E:\All Files\minecraft_repos\minecraft_mods_db\minecraft_mods\DTO\bin\Debug\net9.0\DTO.dll
+E:\All Files\minecraft_repos\minecraft_mods_db\minecraft_mods\DTO\bin\Debug\net9.0\DTO.pdb
+E:\All Files\minecraft_repos\minecraft_mods_db\minecraft_mods\DTO\obj\Debug\net9.0\DTO.GeneratedMSBuildEditorConfig.editorconfig
+E:\All Files\minecraft_repos\minecraft_mods_db\minecraft_mods\DTO\obj\Debug\net9.0\DTO.AssemblyInfoInputs.cache
+E:\All Files\minecraft_repos\minecraft_mods_db\minecraft_mods\DTO\obj\Debug\net9.0\DTO.AssemblyInfo.cs
+E:\All Files\minecraft_repos\minecraft_mods_db\minecraft_mods\DTO\obj\Debug\net9.0\DTO.csproj.CoreCompileInputs.cache
+E:\All Files\minecraft_repos\minecraft_mods_db\minecraft_mods\DTO\obj\Debug\net9.0\DTO.sourcelink.json
+E:\All Files\minecraft_repos\minecraft_mods_db\minecraft_mods\DTO\obj\Debug\net9.0\DTO.dll
+E:\All Files\minecraft_repos\minecraft_mods_db\minecraft_mods\DTO\obj\Debug\net9.0\refint\DTO.dll
+E:\All Files\minecraft_repos\minecraft_mods_db\minecraft_mods\DTO\obj\Debug\net9.0\DTO.pdb
+E:\All Files\minecraft_repos\minecraft_mods_db\minecraft_mods\DTO\obj\Debug\net9.0\ref\DTO.dll
