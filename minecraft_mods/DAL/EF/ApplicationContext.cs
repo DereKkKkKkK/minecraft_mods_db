@@ -5,7 +5,6 @@ namespace DAL.EF;
 
 public class ApplicationContext : DbContext
 {
-    public DbSet<Book> Books { get; set; }
     public DbSet<Mod> Mods { get; set; }
     public DbSet<Tag> Tags { get; set; }
     public DbSet<ModVersion> ModVersions { get; set; }
@@ -23,7 +22,6 @@ public class ApplicationContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        new BookMap(modelBuilder.Entity<Book>());
         new ModMap(modelBuilder.Entity<Mod>());
         new TagMap(modelBuilder.Entity<Tag>());
         new VersionMap(modelBuilder.Entity<ModVersion>());

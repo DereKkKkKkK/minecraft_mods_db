@@ -2836,11 +2836,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\All Files\\MinecraftRepo$\\minecraft_mods_db\\minecraft_mods\\DAL\\DAL.csproj",
+      "projectUniqueName": "E:\\All Files\\minecraft_repos\\minecraft_mods_db\\minecraft_mods\\DAL\\DAL.csproj",
       "projectName": "DAL",
-      "projectPath": "E:\\All Files\\MinecraftRepo$\\minecraft_mods_db\\minecraft_mods\\DAL\\DAL.csproj",
+      "projectPath": "E:\\All Files\\minecraft_repos\\minecraft_mods_db\\minecraft_mods\\DAL\\DAL.csproj",
       "packagesPath": "C:\\Users\\dexal\\.nuget\\packages\\",
-      "outputPath": "E:\\All Files\\MinecraftRepo$\\minecraft_mods_db\\minecraft_mods\\DAL\\obj\\",
+      "outputPath": "E:\\All Files\\minecraft_repos\\minecraft_mods_db\\minecraft_mods\\DAL\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -2862,8 +2862,8 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "E:\\All Files\\MinecraftRepo$\\minecraft_mods_db\\minecraft_mods\\DTO\\DTO.csproj": {
-              "projectPath": "E:\\All Files\\MinecraftRepo$\\minecraft_mods_db\\minecraft_mods\\DTO\\DTO.csproj"
+            "E:\\All Files\\minecraft_repos\\minecraft_mods_db\\minecraft_mods\\DTO\\DTO.csproj": {
+              "projectPath": "E:\\All Files\\minecraft_repos\\minecraft_mods_db\\minecraft_mods\\DTO\\DTO.csproj"
             }
           }
         }

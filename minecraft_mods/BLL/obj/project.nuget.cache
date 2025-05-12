@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "E3HNAgUaXGQ=",
+  "dgSpecHash": "ZRR/KsIoR4c=",
   "success": true,
-  "projectFilePath": "E:\\All Files\\MinecraftRepo$\\minecraft_mods_db\\minecraft_mods\\BLL\\BLL.csproj",
+  "projectFilePath": "E:\\All Files\\minecraft_repos\\minecraft_mods_db\\minecraft_mods\\BLL\\BLL.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\dexal\\.nuget\\packages\\microsoft.entityframeworkcore\\9.0.1\\microsoft.entityframeworkcore.9.0.1.nupkg.sha512",
     "C:\\Users\\dexal\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\9.0.1\\microsoft.entityframeworkcore.abstractions.9.0.1.nupkg.sha512",
