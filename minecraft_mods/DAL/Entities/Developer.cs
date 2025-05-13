@@ -4,7 +4,6 @@ namespace DAL.Entities;
 
 public class Developer : BaseEntity
 {
-    public Guid Id { get; set; }
     public string Nickname { get; set; } = "";
 }
 

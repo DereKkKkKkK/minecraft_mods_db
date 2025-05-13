@@ -19,7 +19,9 @@ public class FocusRepository(ApplicationContext context) : IRepository<FocusDto,
             FocusDto FocusDto = new()
             {
                 Id = focus.Id,
-                Name = focus.Name
+                Name = focus.Name,
+                CreatedAt = focus.CreatedAt,
+                UpdatedAt = focus.UpdatedAt,
             };
             focusList.Add(FocusDto);
         }
@@ -37,7 +39,9 @@ public class FocusRepository(ApplicationContext context) : IRepository<FocusDto,
         return new FocusDto()
         {
             Id = focus.Id,
-            Name = focus.Name
+            Name = focus.Name,
+            CreatedAt = focus.CreatedAt,
+            UpdatedAt = focus.UpdatedAt,
         };
     }
 
@@ -47,6 +51,8 @@ public class FocusRepository(ApplicationContext context) : IRepository<FocusDto,
         Focus createdFocus = new()
         {
             Name = focus.Name,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
         
         
@@ -57,7 +63,9 @@ public class FocusRepository(ApplicationContext context) : IRepository<FocusDto,
         return new FocusDto()
         {
             Id = createdFocus.Id,
-            Name = createdFocus.Name
+            Name = createdFocus.Name,
+            CreatedAt = createdFocus.CreatedAt,
+            UpdatedAt = createdFocus.UpdatedAt,
         };
     }
 
@@ -78,6 +86,8 @@ public class FocusRepository(ApplicationContext context) : IRepository<FocusDto,
         {
             Id = updatedFocus.Id,
             Name = updatedFocus.Name,
+            CreatedAt = updatedFocus.CreatedAt,
+            UpdatedAt = DateTime.UtcNow
         };
     }
 

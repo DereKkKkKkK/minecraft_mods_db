@@ -11,7 +11,7 @@ public class CollectionDto
     public Guid Id { get; set; }
     public string Name { get; set; } = "";
     public int TimeToComplete { get; set; }
-    public List<ModDto> Mods { get; set; } = new();
+    public List<ModForCollectionDto> Mods { get; set; } = new();
     public List<FocusDto> Focuses { get; set; } = new();
     public ModVersionDto Version { get; set; }
     public ModLoaderDto ModLoader { get; set; }

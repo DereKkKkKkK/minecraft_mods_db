@@ -3,7 +3,6 @@ namespace DAL.Entities;
 
 public class Focus : BaseEntity
 {
-    public Guid Id { get; set; }
     public string Name { get; set; } = "";
     public List<Collection> Collections { get; set; } = new();
     

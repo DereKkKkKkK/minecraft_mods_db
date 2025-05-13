@@ -6,7 +6,6 @@ namespace DAL.Entities;
 public class Collection : BaseEntity
 
 {
-    public Guid Id { get; set; }
     public string Name { get; set; } = "";
     public int TimeToComplete { get; set; }
     public List<Mod> Mods { get; set; } = new();

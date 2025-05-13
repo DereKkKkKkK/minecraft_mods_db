@@ -19,7 +19,9 @@ public class ModLoaderRepository(ApplicationContext context) : IRepository<ModLo
             ModLoaderDto ModLoaderDto = new()
             {
                 Id = modLoader.Id,
-                Title = modLoader.Title
+                Title = modLoader.Title,
+                CreatedAt = modLoader.CreatedAt,
+                UpdatedAt = modLoader.UpdatedAt,
             };
             modLoadersList.Add(ModLoaderDto);
         }
@@ -37,7 +39,9 @@ public class ModLoaderRepository(ApplicationContext context) : IRepository<ModLo
         return new ModLoaderDto()
         {
             Id = modLoader.Id,
-            Title = modLoader.Title
+            Title = modLoader.Title,
+            CreatedAt = modLoader.CreatedAt,
+            UpdatedAt = modLoader.UpdatedAt,
         };
     }
 
@@ -47,6 +51,8 @@ public class ModLoaderRepository(ApplicationContext context) : IRepository<ModLo
         ModLoader createdModLoader = new()
         {
             Title = modLoader.Title,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
         
         
@@ -57,7 +63,9 @@ public class ModLoaderRepository(ApplicationContext context) : IRepository<ModLo
         return new ModLoaderDto()
         {
             Id = createdModLoader.Id,
-            Title = createdModLoader.Title
+            Title = createdModLoader.Title,
+            CreatedAt = createdModLoader.CreatedAt,
+            UpdatedAt = createdModLoader.UpdatedAt,
         };
     }
 
@@ -78,6 +86,8 @@ public class ModLoaderRepository(ApplicationContext context) : IRepository<ModLo
         {
             Id = updatedModLoader.Id,
             Title = updatedModLoader.Title,
+            CreatedAt = updatedModLoader.CreatedAt,
+            UpdatedAt = DateTime.UtcNow
         };
     }
 

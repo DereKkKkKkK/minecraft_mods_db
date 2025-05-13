@@ -18,11 +18,6 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
     {
         List<Collection> collections = await context.Collections
             .Include(c => c.Mods)
-                .ThenInclude(m => m.Versions)
-            .Include(c => c.Mods)
-                .ThenInclude(m => m.ModLoaders)
-            .Include(c => c.Mods)
-                .ThenInclude(m => m.Tags)
             .Include(c => c.Focuses)
             .Include(c => c.Version)
             .Include(c => c.ModLoader)
@@ -37,29 +32,14 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
             CreatedAt = collection.CreatedAt,
             UpdatedAt = collection.UpdatedAt,
             
-            Mods = collection.Mods.Select(m => new ModDto()
+            Mods = collection.Mods.Select(m => new ModForCollectionDto()
             {
                 Id = m.Id,
                 Title = m.Title,
                 Description = m.Description,
                 IsClientside = m.IsClientside,
                 Downloads = m.Downloads,
-                Size = m.Size,
-                Versions = m.Versions.Select(v => new ModVersionDto()
-                {
-                    Id = v.Id,
-                    Title = v.Title,
-                }).ToList(),
-                ModLoaders = m.ModLoaders.Select(l => new ModLoaderDto()
-                {
-                    Id = l.Id,
-                    Title = l.Title
-                }).ToList(),
-                Tags = m.Tags.Select(t => new TagDto()
-                {
-                    Id = t.Id,
-                    Title = t.Title
-                }).ToList()
+                Size = m.Size
             }).ToList(),
             
             Focuses = collection.Focuses.Select(f => new FocusDto()
@@ -92,11 +72,6 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
     {
         Collection? collection = await context.Collections
             .Include(c => c.Mods)
-                .ThenInclude(m => m.Versions)
-            .Include(c => c.Mods)
-                .ThenInclude(m => m.ModLoaders)
-            .Include(c => c.Mods)
-                .ThenInclude(m => m.Tags)
             .Include(c => c.Focuses)
             .Include(c => c.Version)
             .Include(c => c.ModLoader)
@@ -111,7 +86,7 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
             CreatedAt = collection.CreatedAt,
             UpdatedAt = collection.UpdatedAt,
             
-            Mods = collection.Mods.Select(m => new ModDto()
+            Mods = collection.Mods.Select(m => new ModForCollectionDto()
             {
                 Id = m.Id,
                 Title = m.Title,
@@ -119,21 +94,6 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
                 IsClientside = m.IsClientside,
                 Downloads = m.Downloads,
                 Size = m.Size,
-                Versions = m.Versions.Select(v => new ModVersionDto()
-                {
-                    Id = v.Id,
-                    Title = v.Title,
-                }).ToList(),
-                ModLoaders = m.ModLoaders.Select(l => new ModLoaderDto()
-                {
-                    Id = l.Id,
-                    Title = l.Title,
-                }).ToList(),
-                Tags = m.Tags.Select(t => new TagDto()
-                {
-                    Id = t.Id,
-                    Title = t.Title,
-                }).ToList(),
             }).ToList(),
             
             Focuses = collection.Focuses.Select(f => new FocusDto()
@@ -165,9 +125,6 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
     public async Task<CollectionDto> Create(CreateCollectionDto collection)
     {
         var mods = await context.Mods
-            .Include(m => m.Versions)
-            .Include(m => m.ModLoaders)
-            .Include(m => m.Tags)
             .Where(m => collection.ModsIds.Contains(m.Id))
             .ToListAsync();
         
@@ -203,7 +160,7 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
             CreatedAt = createdCollection.CreatedAt,
             UpdatedAt = createdCollection.UpdatedAt,
             
-            Mods = createdCollection.Mods.Select(m => new ModDto()
+            Mods = createdCollection.Mods.Select(m => new ModForCollectionDto()
             {
                 Id = m.Id,
                 Title = m.Title,
@@ -211,21 +168,6 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
                 IsClientside = m.IsClientside,
                 Downloads = m.Downloads,
                 Size = m.Size,
-                Versions = m.Versions.Select(v => new ModVersionDto()
-                {
-                    Id = v.Id,
-                    Title = v.Title,
-                }).ToList(),
-                ModLoaders = m.ModLoaders.Select(l => new ModLoaderDto()
-                {
-                    Id = l.Id,
-                    Title = l.Title,
-                }).ToList(),
-                Tags = m.Tags.Select(t => new TagDto()
-                {
-                    Id = t.Id,
-                    Title = t.Title,
-                }).ToList(),
             }).ToList(),
             
             Focuses = createdCollection.Focuses.Select(f => new FocusDto()
@@ -258,11 +200,6 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
     {
         Collection? updatedCollection = await context.Collections
             .Include(c => c.Mods)
-                .ThenInclude(m => m.Versions)
-            .Include(c => c.Mods)
-                .ThenInclude(m => m.ModLoaders)
-            .Include(c => c.Mods)
-                .ThenInclude(m => m.Tags)
             .Include(c => c.Focuses)
             .Include(c => c.Version)
             .Include(c => c.ModLoader)
@@ -288,7 +225,7 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
         updatedCollection.Version = version;
         updatedCollection.ModLoader = modLoader;
         updatedCollection.Difficulty = difficulty;
-        updatedCollection.UpdatedAt = DateTime.UtcNow;
+      
         
         context.Collections.Update(updatedCollection);
         await context.SaveChangesAsync();
@@ -299,9 +236,9 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
             Name = updatedCollection.Name,
             TimeToComplete = updatedCollection.TimeToComplete,
             CreatedAt = updatedCollection.CreatedAt,
-            UpdatedAt = updatedCollection.UpdatedAt,
+            UpdatedAt = DateTime.UtcNow,
             
-            Mods = updatedCollection.Mods.Select(m => new ModDto()
+            Mods = updatedCollection.Mods.Select(m => new ModForCollectionDto()
             {
                 Id = m.Id,
                 Title = m.Title,
@@ -309,21 +246,6 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
                 IsClientside = m.IsClientside,
                 Downloads = m.Downloads,
                 Size = m.Size,
-                Versions = m.Versions.Select(v => new ModVersionDto()
-                {
-                    Id = v.Id,
-                    Title = v.Title,
-                }).ToList(),
-                ModLoaders = m.ModLoaders.Select(l => new ModLoaderDto()
-                {
-                    Id = l.Id,
-                    Title = l.Title,
-                }).ToList(),
-                Tags = m.Tags.Select(t => new TagDto()
-                {
-                    Id = t.Id,
-                    Title = t.Title,
-                }).ToList(),
             }).ToList(),
             
             Focuses = updatedCollection.Focuses.Select(f => new FocusDto()

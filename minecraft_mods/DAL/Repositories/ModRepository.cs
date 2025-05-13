@@ -190,6 +190,7 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
         updatedMod.IsClientside = mod.IsClientside;
         updatedMod.Downloads = mod.Downloads;
         updatedMod.Size = mod.Size;
+        updatedMod.CreatedAt = mod.CreatedAt;
         updatedMod.UpdatedAt = DateTime.UtcNow;
         
         

@@ -20,6 +20,8 @@ public class DeveloperRepository(ApplicationContext context) : IRepository<Devel
             {
                 Id = developer.Id,
                 Nickname = developer.Nickname,
+                CreatedAt = developer.CreatedAt,
+                UpdatedAt = developer.UpdatedAt,
             };
             developersList.Add(DeveloperDto);
         }
@@ -37,7 +39,9 @@ public class DeveloperRepository(ApplicationContext context) : IRepository<Devel
         return new DeveloperDto()
         {
             Id = developer.Id,
-            Nickname = developer.Nickname
+            Nickname = developer.Nickname,
+            CreatedAt = developer.CreatedAt,
+            UpdatedAt = developer.UpdatedAt,
         };
     }
 
@@ -47,6 +51,8 @@ public class DeveloperRepository(ApplicationContext context) : IRepository<Devel
         Developer createdDeveloper = new()
         {
             Nickname = developer.Nickname,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
         
         
@@ -57,7 +63,9 @@ public class DeveloperRepository(ApplicationContext context) : IRepository<Devel
         return new DeveloperDto()
         {
             Id = createdDeveloper.Id,
-            Nickname = createdDeveloper.Nickname
+            Nickname = createdDeveloper.Nickname,
+            CreatedAt = createdDeveloper.CreatedAt,
+            UpdatedAt = createdDeveloper.UpdatedAt,
         };
     }
 
@@ -78,6 +86,8 @@ public class DeveloperRepository(ApplicationContext context) : IRepository<Devel
         {
             Id = updatedDeveloper.Id,
             Nickname = updatedDeveloper.Nickname,
+            CreatedAt = updatedDeveloper.CreatedAt,
+            UpdatedAt = DateTime.UtcNow,
         };
     }
 

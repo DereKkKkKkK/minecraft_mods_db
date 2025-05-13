@@ -5,7 +5,6 @@ namespace DAL.Entities;
 
 public class Difficulty : BaseEntity
 {
-    public Guid Id { get; set; }
     public string Title { get; set; } = "";
     public List<Collection> Collections { get; set; } = new();
 }

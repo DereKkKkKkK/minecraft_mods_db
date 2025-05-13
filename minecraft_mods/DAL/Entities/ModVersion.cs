@@ -4,7 +4,6 @@ namespace DAL.Entities;
 
 public class ModVersion : BaseEntity
 {
-    public Guid Id { get; set; }
     public string Title { get; set; } = "";
     public List<Mod> Mods { get; set; } = new();
     public List<Collection> Collections { get; set; } = new();

@@ -19,7 +19,9 @@ public class VersionRepository(ApplicationContext context) : IRepository<ModVers
             ModVersionDto modVersionDto = new()
             {
                 Id = mod_version.Id,
-                Title = mod_version.Title
+                Title = mod_version.Title,
+                CreatedAt = mod_version.CreatedAt,
+                UpdatedAt = mod_version.UpdatedAt,
             };
             versionsList.Add(modVersionDto);
         }
@@ -37,7 +39,9 @@ public class VersionRepository(ApplicationContext context) : IRepository<ModVers
         return new ModVersionDto()
         {
             Id = mod_version.Id,
-            Title = mod_version.Title
+            Title = mod_version.Title,
+            CreatedAt = mod_version.CreatedAt,
+            UpdatedAt = mod_version.UpdatedAt,
         };
     }
 
@@ -46,7 +50,9 @@ public class VersionRepository(ApplicationContext context) : IRepository<ModVers
     {
         ModVersion createdVersion = new()
         {
-            Title = mod_version.Title
+            Title = mod_version.Title,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
         
         
@@ -57,7 +63,9 @@ public class VersionRepository(ApplicationContext context) : IRepository<ModVers
         return new ModVersionDto()
         {
             Id = createdVersion.Id,
-            Title = createdVersion.Title
+            Title = createdVersion.Title,
+            CreatedAt = createdVersion.CreatedAt,
+            UpdatedAt = createdVersion.UpdatedAt,
         };
     }
 
@@ -78,6 +86,8 @@ public class VersionRepository(ApplicationContext context) : IRepository<ModVers
         {
             Id = updatedVersion.Id,
             Title = updatedVersion.Title,
+            CreatedAt = updatedVersion.CreatedAt,
+            UpdatedAt = DateTime.UtcNow
         };
     }
 

@@ -20,7 +20,9 @@ public class TagRepository(ApplicationContext context) : IRepository<TagDto, Cre
             TagDto TagDto = new()
             {
                 Id = tag.Id,
-                Title = tag.Title
+                Title = tag.Title,
+                CreatedAt = tag.CreatedAt,
+                UpdatedAt = tag.UpdatedAt,
             };
             tagsList.Add(TagDto);
         }
@@ -38,7 +40,9 @@ public class TagRepository(ApplicationContext context) : IRepository<TagDto, Cre
         return new TagDto()
         {
             Id = tag.Id,
-            Title = tag.Title
+            Title = tag.Title,
+            CreatedAt = tag.CreatedAt,
+            UpdatedAt = tag.UpdatedAt,
         };
     }
 
@@ -48,6 +52,8 @@ public class TagRepository(ApplicationContext context) : IRepository<TagDto, Cre
         Tag createdTag = new()
         {
             Title = tag.Title,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
         
         
@@ -58,7 +64,9 @@ public class TagRepository(ApplicationContext context) : IRepository<TagDto, Cre
         return new TagDto()
         {
             Id = createdTag.Id,
-            Title = createdTag.Title
+            Title = createdTag.Title,
+            CreatedAt = createdTag.CreatedAt,
+            UpdatedAt = createdTag.UpdatedAt,
         };
     }
 
@@ -79,6 +87,8 @@ public class TagRepository(ApplicationContext context) : IRepository<TagDto, Cre
         {
             Id = updatedTag.Id,
             Title = updatedTag.Title,
+            CreatedAt = updatedTag.CreatedAt,
+            UpdatedAt = DateTime.UtcNow
         };
     }
 

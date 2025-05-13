@@ -19,7 +19,9 @@ public class DifficultyRepository(ApplicationContext context) : IRepository<Diff
             DifficultyDto DifficultyDto = new()
             {
                 Id = difficulty.Id,
-                Title = difficulty.Title
+                Title = difficulty.Title,
+                CreatedAt = difficulty.CreatedAt,
+                UpdatedAt = difficulty.UpdatedAt,
             };
             difficultiesList.Add(DifficultyDto);
         }
@@ -37,7 +39,9 @@ public class DifficultyRepository(ApplicationContext context) : IRepository<Diff
         return new DifficultyDto()
         {
             Id = difficulty.Id,
-            Title = difficulty.Title
+            Title = difficulty.Title,
+            CreatedAt = difficulty.CreatedAt,
+            UpdatedAt = difficulty.UpdatedAt,
         };
     }
 
@@ -47,6 +51,8 @@ public class DifficultyRepository(ApplicationContext context) : IRepository<Diff
         Difficulty createdDifficulty = new()
         {
             Title = difficulty.Title,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
         
         
@@ -57,7 +63,9 @@ public class DifficultyRepository(ApplicationContext context) : IRepository<Diff
         return new DifficultyDto()
         {
             Id = createdDifficulty.Id,
-            Title = createdDifficulty.Title
+            Title = createdDifficulty.Title,
+            CreatedAt = createdDifficulty.CreatedAt,
+            UpdatedAt = createdDifficulty.UpdatedAt,
         };
     }
 
@@ -78,6 +86,8 @@ public class DifficultyRepository(ApplicationContext context) : IRepository<Diff
         {
             Id = updatedDifficulty.Id,
             Title = updatedDifficulty.Title,
+            CreatedAt = updatedDifficulty.CreatedAt,
+            UpdatedAt = DateTime.UtcNow,
         };
     }
 
