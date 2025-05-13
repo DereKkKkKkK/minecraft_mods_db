@@ -21,5 +21,10 @@ public class VersionMap
         builder
             .HasMany(v => v.Mods)
             .WithMany(m => m.Versions);
+        
+        
+        builder
+            .HasMany(v => v.Collections)
+            .WithOne(c => c.Version);
     }
 }

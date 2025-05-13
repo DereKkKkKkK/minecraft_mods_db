@@ -31,20 +31,88 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
             {
                 Id = v.Id,
                 Title = v.Title,
+                CreatedAt = v.CreatedAt,
+                UpdatedAt = v.UpdatedAt
             }).ToList(),
             ModLoaders = mod.ModLoaders.Select(l => new ModLoaderDto()
             {
                 Id = l.Id,
                 Title = l.Title,
+                CreatedAt = l.CreatedAt,
+                UpdatedAt = l.UpdatedAt
             }).ToList(),
             Tags = mod.Tags.Select(t => new TagDto()
             {
                 Id = t.Id,
                 Title = t.Title,
+                CreatedAt = t.CreatedAt,
+                UpdatedAt = t.UpdatedAt
             }).ToList(),
             CreatedAt = mod.CreatedAt,
             UpdatedAt = mod.UpdatedAt
         }).ToList();
+    }
+
+
+    public async Task<PaginatedResult<ModDto>> GetByPage(int pageNumber, int pageSize)
+    {
+        var query = context.Mods
+            .Include(m => m.Versions)
+            .Include(m => m.ModLoaders)
+            .Include(m => m.Tags)
+            .AsNoTracking();
+        
+        
+        var totalCount = await context.Mods.CountAsync();
+        
+        
+        var mods = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+        
+        
+        var items = mods.Select(m => new ModDto()
+        {
+            Id = m.Id,
+            Title = m.Title,
+            Description = m.Description,
+            IsClientside = m.IsClientside,
+            Downloads = m.Downloads,
+            Size = m.Size,
+            Versions = m.Versions.Select(v => new ModVersionDto()
+            {
+                Id = v.Id,
+                Title = v.Title,
+                CreatedAt = v.CreatedAt,
+                UpdatedAt = v.UpdatedAt
+            }).ToList(),
+            ModLoaders = m.ModLoaders.Select(l => new ModLoaderDto()
+            {
+                Id = l.Id,
+                Title = l.Title,
+                CreatedAt = l.CreatedAt,
+                UpdatedAt = l.UpdatedAt
+            }).ToList(),
+            Tags = m.Tags.Select(t => new TagDto()
+            {
+                Id = t.Id,
+                Title = t.Title,
+                CreatedAt = t.CreatedAt,
+                UpdatedAt = t.UpdatedAt
+            }).ToList(),
+            CreatedAt = m.CreatedAt,
+            UpdatedAt = m.UpdatedAt
+        }).ToList();
+
+
+        return new PaginatedResult<ModDto>()
+        {
+            Items = items,
+            TotalCount = totalCount,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
     }
 
 
@@ -69,16 +137,22 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
             {
                 Id = v.Id,
                 Title = v.Title,
+                CreatedAt = v.CreatedAt,
+                UpdatedAt = v.UpdatedAt
             }).ToList(),
             ModLoaders = mod.ModLoaders.Select(l => new ModLoaderDto()
             {
                 Id = l.Id,
                 Title = l.Title,
+                CreatedAt = l.CreatedAt,
+                UpdatedAt = l.UpdatedAt
             }).ToList(),
             Tags = mod.Tags.Select(t => new TagDto()
             {
                 Id = t.Id,
                 Title = t.Title,
+                CreatedAt = t.CreatedAt,
+                UpdatedAt = t.UpdatedAt
             }).ToList(),
             CreatedAt = mod.CreatedAt,
             UpdatedAt = mod.UpdatedAt
@@ -141,16 +215,22 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
             {
                 Id = v.Id,
                 Title = v.Title,
+                CreatedAt = v.CreatedAt,
+                UpdatedAt = v.UpdatedAt
             }).ToList(),
             ModLoaders = createdMod.ModLoaders.Select(l => new ModLoaderDto()
             {
                 Id = l.Id,
                 Title = l.Title,
+                CreatedAt = l.CreatedAt,
+                UpdatedAt = l.UpdatedAt
             }).ToList(),
             Tags = createdMod.Tags.Select(t => new TagDto()
             {
                 Id = t.Id,
                 Title = t.Title,
+                CreatedAt = t.CreatedAt,
+                UpdatedAt = t.UpdatedAt
             }).ToList(),
             CreatedAt = createdMod.CreatedAt,
             UpdatedAt = createdMod.UpdatedAt
@@ -190,7 +270,6 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
         updatedMod.IsClientside = mod.IsClientside;
         updatedMod.Downloads = mod.Downloads;
         updatedMod.Size = mod.Size;
-        updatedMod.CreatedAt = mod.CreatedAt;
         updatedMod.UpdatedAt = DateTime.UtcNow;
         
         
@@ -217,16 +296,22 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
             {
                 Id = v.Id,
                 Title = v.Title,
+                CreatedAt = v.CreatedAt,
+                UpdatedAt = v.UpdatedAt
             }).ToList(),
             ModLoaders = updatedMod.ModLoaders.Select(l => new ModLoaderDto()
             {
                 Id = l.Id,
                 Title = l.Title,
+                CreatedAt = l.CreatedAt,
+                UpdatedAt = l.UpdatedAt
             }).ToList(),
             Tags = updatedMod.Tags.Select(t => new TagDto()
             {
                 Id = t.Id,
                 Title = t.Title,
+                CreatedAt = t.CreatedAt,
+                UpdatedAt = t.UpdatedAt
             }).ToList(),
             CreatedAt = updatedMod.CreatedAt,
             UpdatedAt = updatedMod.UpdatedAt

@@ -11,23 +11,44 @@ public class DifficultyRepository(ApplicationContext context) : IRepository<Diff
     public async Task<List<DifficultyDto>> GetAll()
     {
         List<Difficulty> difficulties = await context.Difficulties.ToListAsync();
-        List<DifficultyDto> difficultiesList = new List<DifficultyDto>();
         
         
-        foreach (var difficulty in difficulties)
+        return difficulties.Select(difficulty => new DifficultyDto()
         {
-            DifficultyDto DifficultyDto = new()
-            {
-                Id = difficulty.Id,
-                Title = difficulty.Title,
-                CreatedAt = difficulty.CreatedAt,
-                UpdatedAt = difficulty.UpdatedAt,
-            };
-            difficultiesList.Add(DifficultyDto);
-        }
+            Id = difficulty.Id,
+            Title = difficulty.Title,
+            CreatedAt = difficulty.CreatedAt,
+            UpdatedAt = difficulty.UpdatedAt
+        }).ToList();
+    }
+    
+    
+    public async Task<PaginatedResult<DifficultyDto>> GetByPage(int pageNumber, int pageSize)
+    {
+        var query = context.Difficulties.AsNoTracking();
+        var totalCount = await query.CountAsync();
+        var tags = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
         
         
-        return difficultiesList;
+        var items = tags.Select(d => new DifficultyDto()
+        {
+            Id = d.Id,
+            Title = d.Title,
+            CreatedAt = d.CreatedAt,
+            UpdatedAt = d.UpdatedAt
+        }).ToList();
+
+
+        return new PaginatedResult<DifficultyDto>()
+        {
+            Items = items,
+            TotalCount = totalCount,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
     }
 
 
@@ -76,6 +97,7 @@ public class DifficultyRepository(ApplicationContext context) : IRepository<Diff
         
         
         updatedDifficulty.Title = difficulty.Title;
+        updatedDifficulty.UpdatedAt = DateTime.UtcNow;
         
         
         context.Difficulties.Update(updatedDifficulty);
@@ -87,7 +109,7 @@ public class DifficultyRepository(ApplicationContext context) : IRepository<Diff
             Id = updatedDifficulty.Id,
             Title = updatedDifficulty.Title,
             CreatedAt = updatedDifficulty.CreatedAt,
-            UpdatedAt = DateTime.UtcNow,
+            UpdatedAt = updatedDifficulty.UpdatedAt
         };
     }
 

@@ -1,15 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "BhhFhb1usQ8=",
+  "dgSpecHash": "l6Wi0bgOCBg=",
   "success": true,
-  "projectFilePath": "C:\\Users\\kapi\\Desktop\\sosal\\minecraft_mods_db\\minecraft_mods\\DTO\\DTO.csproj",
+  "projectFilePath": "E:\\All Files\\minecraft_repos\\minecraft_mods_db\\minecraft_mods\\DTO\\DTO.csproj",
   "expectedPackageFiles": [],
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file C:\\Users\\kapi\\Desktop\\sosal\\minecraft_mods_db\\minecraft_mods\\DTO\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    }
-  ]
+  "logs": []
 }

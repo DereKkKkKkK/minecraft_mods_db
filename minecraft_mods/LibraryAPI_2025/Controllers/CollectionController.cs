@@ -1,4 +1,5 @@
 ﻿using BLL.Interfaces;
+using DAL.Interfaces;
 using DTO.Collection;
 using Microsoft.AspNetCore.Mvc;
 namespace LibraryAPI_2025.Controllers;
@@ -9,8 +10,22 @@ namespace LibraryAPI_2025.Controllers;
 [Route("collections")]
 public class CollectionController(IService<CollectionDto, CreateCollectionDto, UpdateCollectionDto> service) : ControllerBase
 {
-    [HttpGet]
+    [HttpGet("getAll")]
     public async Task<ActionResult<List<CollectionDto>>> GetAll() => Ok(await service.GetAll());
+    
+    
+    [HttpGet]
+    public async Task<ActionResult<PaginatedResult<CollectionDto>>> GetByPage([FromQuery] int pageNumber, [FromQuery] int pageSize)
+    {
+        if (pageNumber < 1 || pageSize < 1)
+        {
+            return BadRequest("Page number and page size must be positive integers.");
+        }
+        
+
+        var result = await service.GetByPage(pageNumber, pageSize);
+        return Ok(result);
+    }
     
     
     [HttpGet("{id}")]

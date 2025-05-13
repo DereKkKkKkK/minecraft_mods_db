@@ -1,4 +1,5 @@
 ﻿using BLL.Interfaces;
+using DAL.Interfaces;
 using DTO.ModLoader;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,8 +10,22 @@ namespace LibraryAPI_2025.Controllers;
 [Route("modLoaders")]
 public class ModLoaderController(IService<ModLoaderDto, CreateModLoaderDto, UpdateModLoaderDto> service) : ControllerBase
 {
-    [HttpGet]
+    [HttpGet("getAll")]
     public async Task<ActionResult<List<ModLoaderDto>>> GetAll() => Ok(await service.GetAll());
+    
+    
+    [HttpGet]
+    public async Task<ActionResult<PaginatedResult<ModLoaderDto>>> GetByPage([FromQuery] int pageNumber, [FromQuery] int pageSize)
+    {
+        if (pageNumber < 1 || pageSize < 1)
+        {
+            return BadRequest("Page number and page size must be positive integers.");
+        }
+        
+
+        var result = await service.GetByPage(pageNumber, pageSize);
+        return Ok(result);
+    }
     
     
     [HttpGet("{id}")]

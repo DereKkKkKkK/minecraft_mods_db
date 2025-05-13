@@ -68,6 +68,76 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
         }).ToList();
     }
 
+
+    public async Task<PaginatedResult<CollectionDto>> GetByPage(int pageNumber, int pageSize)
+    {
+        var query = context.Collections
+            .Include(m => m.Mods)
+            .Include(m => m.Focuses)
+            .Include(c => c.Version)
+            .Include(c => c.ModLoader)
+            .Include(c => c.Difficulty)
+            .AsNoTracking();
+
+
+        var totalCount = await context.Mods.CountAsync();
+
+
+        var collections = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+        
+        
+        var items = collections.Select(c => new CollectionDto()
+        {
+            Id = c.Id,
+            Name = c.Name,
+            TimeToComplete = c.TimeToComplete,
+            Mods = c.Mods.Select(m => new ModForCollectionDto()
+            {
+                Id = m.Id,
+                Title = m.Title,
+                Description = m.Description,
+                IsClientside = m.IsClientside,
+                Downloads = m.Downloads,
+                Size = m.Size,
+            }).ToList(),
+            Focuses = c.Focuses.Select(f => new FocusDto()
+            {
+                Id = f.Id,
+                Name = f.Name,
+            }).ToList(),
+            Version = new ModVersionDto()
+            {
+                Id = c.Version.Id,
+                Title = c.Version.Title
+            },
+            ModLoader = new ModLoaderDto()
+            {
+                Id = c.ModLoader.Id,
+                Title = c.ModLoader.Title
+            },
+            Difficulty = new DifficultyDto()
+            {
+                Id = c.Difficulty.Id,
+                Title = c.Difficulty.Title
+            },
+            CreatedAt = c.CreatedAt,
+            UpdatedAt = c.UpdatedAt,
+        }).ToList();
+
+
+        return new PaginatedResult<CollectionDto>()
+        {
+            Items = items,
+            TotalCount = totalCount,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
+    }
+
+
     public async Task<CollectionDto> GetById(Guid id)
     {
         Collection? collection = await context.Collections
@@ -83,9 +153,6 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
             Id = collection.Id,
             Name = collection.Name,
             TimeToComplete = collection.TimeToComplete,
-            CreatedAt = collection.CreatedAt,
-            UpdatedAt = collection.UpdatedAt,
-            
             Mods = collection.Mods.Select(m => new ModForCollectionDto()
             {
                 Id = m.Id,
@@ -95,33 +162,32 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
                 Downloads = m.Downloads,
                 Size = m.Size,
             }).ToList(),
-            
             Focuses = collection.Focuses.Select(f => new FocusDto()
             {
                 Id = f.Id,
                 Name = f.Name,
             }).ToList(),
-            
             Version = new ModVersionDto()
             {
                 Id = collection.Version.Id,
                 Title = collection.Version.Title
             },
-            
             ModLoader = new ModLoaderDto()
             {
                 Id = collection.ModLoader.Id,
                 Title = collection.ModLoader.Title
             },
-            
             Difficulty = new DifficultyDto()
             {
                 Id = collection.Difficulty.Id,
                 Title = collection.Difficulty.Title
-            }
+            },
+            CreatedAt = collection.CreatedAt,
+            UpdatedAt = collection.UpdatedAt
         };
     }
 
+    
     public async Task<CollectionDto> Create(CreateCollectionDto collection)
     {
         var mods = await context.Mods
@@ -157,9 +223,6 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
             Id = createdCollection.Id,
             Name = createdCollection.Name,
             TimeToComplete = createdCollection.TimeToComplete,
-            CreatedAt = createdCollection.CreatedAt,
-            UpdatedAt = createdCollection.UpdatedAt,
-            
             Mods = createdCollection.Mods.Select(m => new ModForCollectionDto()
             {
                 Id = m.Id,
@@ -169,33 +232,32 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
                 Downloads = m.Downloads,
                 Size = m.Size,
             }).ToList(),
-            
             Focuses = createdCollection.Focuses.Select(f => new FocusDto()
             {
                 Id = f.Id,
                 Name = f.Name,
             }).ToList(),
-            
             Version = new ModVersionDto()
             {
                 Id = createdCollection.Version.Id,
                 Title = createdCollection.Version.Title
             },
-            
             ModLoader = new ModLoaderDto()
             {
                 Id = createdCollection.ModLoader.Id,
                 Title = createdCollection.ModLoader.Title
             },
-            
             Difficulty = new DifficultyDto()
             {
                 Id = createdCollection.Difficulty.Id,
                 Title = createdCollection.Difficulty.Title
-            }
+            },
+            CreatedAt = createdCollection.CreatedAt,
+            UpdatedAt = createdCollection.UpdatedAt
         };
     }
 
+    
     public async Task<CollectionDto> Update(UpdateCollectionDto collection)
     {
         Collection? updatedCollection = await context.Collections
@@ -225,6 +287,7 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
         updatedCollection.Version = version;
         updatedCollection.ModLoader = modLoader;
         updatedCollection.Difficulty = difficulty;
+        updatedCollection.UpdatedAt = DateTime.UtcNow;
       
         
         context.Collections.Update(updatedCollection);
@@ -235,9 +298,6 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
             Id = updatedCollection.Id,
             Name = updatedCollection.Name,
             TimeToComplete = updatedCollection.TimeToComplete,
-            CreatedAt = updatedCollection.CreatedAt,
-            UpdatedAt = DateTime.UtcNow,
-            
             Mods = updatedCollection.Mods.Select(m => new ModForCollectionDto()
             {
                 Id = m.Id,
@@ -247,33 +307,32 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
                 Downloads = m.Downloads,
                 Size = m.Size,
             }).ToList(),
-            
             Focuses = updatedCollection.Focuses.Select(f => new FocusDto()
             {
                 Id = f.Id,
                 Name = f.Name,
             }).ToList(),
-            
             Version = new ModVersionDto()
             {
                 Id = updatedCollection.Version.Id,
                 Title = updatedCollection.Version.Title
             },
-            
             ModLoader = new ModLoaderDto()
             {
                 Id = updatedCollection.ModLoader.Id,
                 Title = updatedCollection.ModLoader.Title
             },
-            
             Difficulty = new DifficultyDto()
             {
                 Id = updatedCollection.Difficulty.Id,
                 Title = updatedCollection.Difficulty.Title
-            }
+            },
+            CreatedAt = updatedCollection.CreatedAt,
+            UpdatedAt = updatedCollection.UpdatedAt
         };
     }
 
+    
     public async Task Delete(Guid id)
     {
         Collection? collection = await context.Collections.FindAsync(id);

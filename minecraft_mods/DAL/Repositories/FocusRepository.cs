@@ -10,24 +10,44 @@ public class FocusRepository(ApplicationContext context) : IRepository<FocusDto,
     public async Task<List<FocusDto>> GetAll()
     {
         List<Focus> focuses = await context.Focuses.ToListAsync();
-        List<FocusDto> focusList = new List<FocusDto>();
         
         
-        
-        foreach (var focus in focuses)
+        return focuses.Select(difficulty => new FocusDto()
         {
-            FocusDto FocusDto = new()
-            {
-                Id = focus.Id,
-                Name = focus.Name,
-                CreatedAt = focus.CreatedAt,
-                UpdatedAt = focus.UpdatedAt,
-            };
-            focusList.Add(FocusDto);
-        }
+            Id = difficulty.Id,
+            Name = difficulty.Name,
+            CreatedAt = difficulty.CreatedAt,
+            UpdatedAt = difficulty.UpdatedAt
+        }).ToList();
+    }
+    
+    
+    public async Task<PaginatedResult<FocusDto>> GetByPage(int pageNumber, int pageSize)
+    {
+        var query = context.Focuses.AsNoTracking();
+        var totalCount = await query.CountAsync();
+        var tags = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
         
         
-        return focusList;
+        var items = tags.Select(f => new FocusDto()
+        {
+            Id = f.Id,
+            Name = f.Name,
+            CreatedAt = f.CreatedAt,
+            UpdatedAt = f.UpdatedAt,
+        }).ToList();
+
+
+        return new PaginatedResult<FocusDto>()
+        {
+            Items = items,
+            TotalCount = totalCount,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
     }
 
 
@@ -76,6 +96,7 @@ public class FocusRepository(ApplicationContext context) : IRepository<FocusDto,
         
         
         updatedFocus.Name = focus.Name;
+        updatedFocus.UpdatedAt = DateTime.UtcNow;
         
         
         context.Focuses.Update(updatedFocus);
@@ -87,7 +108,7 @@ public class FocusRepository(ApplicationContext context) : IRepository<FocusDto,
             Id = updatedFocus.Id,
             Name = updatedFocus.Name,
             CreatedAt = updatedFocus.CreatedAt,
-            UpdatedAt = DateTime.UtcNow
+            UpdatedAt = updatedFocus.UpdatedAt
         };
     }
 

@@ -7,6 +7,7 @@ namespace BLL.Services;
 public class ModService(IRepository<ModDto, CreateModDto, UpdateModDto> repository) : IService<ModDto, CreateModDto, UpdateModDto>
 {
     public async Task<List<ModDto>> GetAll() => await repository.GetAll();
+    public async Task<PaginatedResult<ModDto>> GetByPage(int pageNumber, int pageSize) => await repository.GetByPage(pageNumber, pageSize);
     public async Task<ModDto> GetById(Guid id) => await repository.GetById(id);
     public async Task<ModDto> Create(CreateModDto mod) => await repository.Create(mod);
     public async Task<ModDto> Update(UpdateModDto mod) => await repository.Update(mod);

@@ -11,23 +11,44 @@ public class VersionRepository(ApplicationContext context) : IRepository<ModVers
     public async Task<List<ModVersionDto>> GetAll()
     {
         List<ModVersion> versions = await context.ModVersions.ToListAsync();
-        List<ModVersionDto> versionsList = new List<ModVersionDto>();
         
         
-        foreach (var mod_version in versions)
+        return versions.Select(v => new ModVersionDto()
         {
-            ModVersionDto modVersionDto = new()
-            {
-                Id = mod_version.Id,
-                Title = mod_version.Title,
-                CreatedAt = mod_version.CreatedAt,
-                UpdatedAt = mod_version.UpdatedAt,
-            };
-            versionsList.Add(modVersionDto);
-        }
+            Id = v.Id,
+            Title = v.Title,
+            CreatedAt = v.CreatedAt,
+            UpdatedAt = v.UpdatedAt
+        }).ToList();
+    }
+    
+    
+    public async Task<PaginatedResult<ModVersionDto>> GetByPage(int pageNumber, int pageSize)
+    {
+        var query = context.ModVersions.AsNoTracking();
+        var totalCount = await query.CountAsync();
+        var tags = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
         
         
-        return versionsList;
+        var items = tags.Select(v => new ModVersionDto()
+        {
+            Id = v.Id,
+            Title = v.Title,
+            CreatedAt = v.CreatedAt,
+            UpdatedAt = v.UpdatedAt
+        }).ToList();
+
+
+        return new PaginatedResult<ModVersionDto>()
+        {
+            Items = items,
+            TotalCount = totalCount,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
     }
 
 
@@ -76,6 +97,7 @@ public class VersionRepository(ApplicationContext context) : IRepository<ModVers
         
         
         updatedVersion.Title = mod_version.Title;
+        updatedVersion.UpdatedAt = DateTime.UtcNow;
         
         
         context.ModVersions.Update(updatedVersion);
@@ -87,7 +109,7 @@ public class VersionRepository(ApplicationContext context) : IRepository<ModVers
             Id = updatedVersion.Id,
             Title = updatedVersion.Title,
             CreatedAt = updatedVersion.CreatedAt,
-            UpdatedAt = DateTime.UtcNow
+            UpdatedAt = updatedVersion.UpdatedAt
         };
     }
 

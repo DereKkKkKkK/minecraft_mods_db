@@ -11,23 +11,44 @@ public class DeveloperRepository(ApplicationContext context) : IRepository<Devel
     public async Task<List<DeveloperDto>> GetAll()
     {
         List<Developer> developers = await context.Developers.ToListAsync();
-        List<DeveloperDto> developersList = new List<DeveloperDto>();
         
         
-        foreach (var developer in developers)
+        return developers.Select(developer => new DeveloperDto()
         {
-            DeveloperDto DeveloperDto = new()
-            {
-                Id = developer.Id,
-                Nickname = developer.Nickname,
-                CreatedAt = developer.CreatedAt,
-                UpdatedAt = developer.UpdatedAt,
-            };
-            developersList.Add(DeveloperDto);
-        }
+            Id = developer.Id,
+            Nickname = developer.Nickname,
+            CreatedAt = developer.CreatedAt,
+            UpdatedAt = developer.UpdatedAt
+        }).ToList();
+    }
+    
+    
+    public async Task<PaginatedResult<DeveloperDto>> GetByPage(int pageNumber, int pageSize)
+    {
+        var query = context.Developers.AsNoTracking();
+        var totalCount = await query.CountAsync();
+        var tags = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
         
         
-        return developersList;
+        var items = tags.Select(d => new DeveloperDto()
+        {
+            Id = d.Id,
+            Nickname = d.Nickname,
+            CreatedAt = d.CreatedAt,
+            UpdatedAt = d.UpdatedAt
+        }).ToList();
+
+
+        return new PaginatedResult<DeveloperDto>()
+        {
+            Items = items,
+            TotalCount = totalCount,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
     }
 
 
@@ -76,6 +97,7 @@ public class DeveloperRepository(ApplicationContext context) : IRepository<Devel
         
         
         updatedDeveloper.Nickname = developer.Nickname;
+        updatedDeveloper.UpdatedAt = DateTime.UtcNow;
         
         
         context.Developers.Update(updatedDeveloper);
@@ -87,7 +109,7 @@ public class DeveloperRepository(ApplicationContext context) : IRepository<Devel
             Id = updatedDeveloper.Id,
             Nickname = updatedDeveloper.Nickname,
             CreatedAt = updatedDeveloper.CreatedAt,
-            UpdatedAt = DateTime.UtcNow,
+            UpdatedAt = updatedDeveloper.UpdatedAt
         };
     }
 

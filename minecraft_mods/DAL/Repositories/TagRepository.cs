@@ -12,23 +12,44 @@ public class TagRepository(ApplicationContext context) : IRepository<TagDto, Cre
     public async Task<List<TagDto>> GetAll()
     {
         List<Tag> tags = await context.Tags.ToListAsync();
-        List<TagDto> tagsList = new List<TagDto>();
         
         
-        foreach (var tag in tags)
+        return tags.Select(t => new TagDto()
         {
-            TagDto TagDto = new()
-            {
-                Id = tag.Id,
-                Title = tag.Title,
-                CreatedAt = tag.CreatedAt,
-                UpdatedAt = tag.UpdatedAt,
-            };
-            tagsList.Add(TagDto);
-        }
+            Id = t.Id,
+            Title = t.Title,
+            CreatedAt = t.CreatedAt,
+            UpdatedAt = t.UpdatedAt,
+        }).ToList();
+    }
+
+
+    public async Task<PaginatedResult<TagDto>> GetByPage(int pageNumber, int pageSize)
+    {
+        var query = context.Tags.AsNoTracking();
+        var totalCount = await query.CountAsync();
+        var tags = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
         
         
-        return tagsList;
+        var items = tags.Select(t => new TagDto()
+        {
+            Id = t.Id,
+            Title = t.Title,
+            CreatedAt = t.CreatedAt,
+            UpdatedAt = t.UpdatedAt
+        }).ToList();
+
+
+        return new PaginatedResult<TagDto>()
+        {
+            Items = items,
+            TotalCount = totalCount,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
     }
 
 
@@ -77,6 +98,7 @@ public class TagRepository(ApplicationContext context) : IRepository<TagDto, Cre
         
         
         updatedTag.Title = tag.Title;
+        updatedTag.UpdatedAt = DateTime.UtcNow;
         
         
         context.Tags.Update(updatedTag);
@@ -88,7 +110,7 @@ public class TagRepository(ApplicationContext context) : IRepository<TagDto, Cre
             Id = updatedTag.Id,
             Title = updatedTag.Title,
             CreatedAt = updatedTag.CreatedAt,
-            UpdatedAt = DateTime.UtcNow
+            UpdatedAt = updatedTag.UpdatedAt
         };
     }
 

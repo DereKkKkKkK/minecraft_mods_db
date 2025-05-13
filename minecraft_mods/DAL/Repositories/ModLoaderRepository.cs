@@ -11,23 +11,44 @@ public class ModLoaderRepository(ApplicationContext context) : IRepository<ModLo
     public async Task<List<ModLoaderDto>> GetAll()
     {
         List<ModLoader> modLoaders = await context.ModLoaders.ToListAsync();
-        List<ModLoaderDto> modLoadersList = new List<ModLoaderDto>();
         
         
-        foreach (var modLoader in modLoaders)
+        return modLoaders.Select(modLoader => new ModLoaderDto()
         {
-            ModLoaderDto ModLoaderDto = new()
-            {
-                Id = modLoader.Id,
-                Title = modLoader.Title,
-                CreatedAt = modLoader.CreatedAt,
-                UpdatedAt = modLoader.UpdatedAt,
-            };
-            modLoadersList.Add(ModLoaderDto);
-        }
+            Id = modLoader.Id,
+            Title = modLoader.Title,
+            CreatedAt = modLoader.CreatedAt,
+            UpdatedAt = modLoader.UpdatedAt
+        }).ToList();
+    }
+    
+    
+    public async Task<PaginatedResult<ModLoaderDto>> GetByPage(int pageNumber, int pageSize)
+    {
+        var query = context.ModLoaders.AsNoTracking();
+        var totalCount = await query.CountAsync();
+        var tags = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
         
         
-        return modLoadersList;
+        var items = tags.Select(l => new ModLoaderDto()
+        {
+            Id = l.Id,
+            Title = l.Title,
+            CreatedAt = l.CreatedAt,
+            UpdatedAt = l.UpdatedAt
+        }).ToList();
+
+
+        return new PaginatedResult<ModLoaderDto>()
+        {
+            Items = items,
+            TotalCount = totalCount,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
     }
 
 
@@ -76,6 +97,7 @@ public class ModLoaderRepository(ApplicationContext context) : IRepository<ModLo
         
         
         updatedModLoader.Title = modLoader.Title;
+        updatedModLoader.UpdatedAt = DateTime.UtcNow;
         
         
         context.ModLoaders.Update(updatedModLoader);
@@ -87,7 +109,7 @@ public class ModLoaderRepository(ApplicationContext context) : IRepository<ModLo
             Id = updatedModLoader.Id,
             Title = updatedModLoader.Title,
             CreatedAt = updatedModLoader.CreatedAt,
-            UpdatedAt = DateTime.UtcNow
+            UpdatedAt = updatedModLoader.UpdatedAt
         };
     }
 
