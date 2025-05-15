@@ -2,6 +2,7 @@
 using DAL.Entities;
 using DAL.Interfaces;
 using DTO.ModLoader;
+using DTO.Shared;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repositories;
@@ -23,7 +24,7 @@ public class ModLoaderRepository(ApplicationContext context) : IRepository<ModLo
     }
     
     
-    public async Task<PaginatedResult<ModLoaderDto>> GetByPage(int pageNumber, int pageSize)
+    public async Task<QueryParamsDto<ModLoaderDto>> GetByPage(int pageNumber, int pageSize)
     {
         var query = context.ModLoaders.AsNoTracking();
         var totalCount = await query.CountAsync();
@@ -42,7 +43,7 @@ public class ModLoaderRepository(ApplicationContext context) : IRepository<ModLo
         }).ToList();
 
 
-        return new PaginatedResult<ModLoaderDto>()
+        return new QueryParamsDto<ModLoaderDto>()
         {
             Items = items,
             TotalCount = totalCount,

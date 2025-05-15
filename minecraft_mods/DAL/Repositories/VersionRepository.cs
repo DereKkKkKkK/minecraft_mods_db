@@ -2,6 +2,7 @@
 using DAL.Entities;
 using DAL.Interfaces;
 using DTO.ModVersion;
+using DTO.Shared;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repositories;
@@ -23,7 +24,7 @@ public class VersionRepository(ApplicationContext context) : IRepository<ModVers
     }
     
     
-    public async Task<PaginatedResult<ModVersionDto>> GetByPage(int pageNumber, int pageSize)
+    public async Task<QueryParamsDto<ModVersionDto>> GetByPage(int pageNumber, int pageSize)
     {
         var query = context.ModVersions.AsNoTracking();
         var totalCount = await query.CountAsync();
@@ -42,7 +43,7 @@ public class VersionRepository(ApplicationContext context) : IRepository<ModVers
         }).ToList();
 
 
-        return new PaginatedResult<ModVersionDto>()
+        return new QueryParamsDto<ModVersionDto>()
         {
             Items = items,
             TotalCount = totalCount,

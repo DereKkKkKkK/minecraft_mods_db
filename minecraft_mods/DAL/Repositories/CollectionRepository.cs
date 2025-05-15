@@ -7,6 +7,7 @@ using DTO.Focus;
 using DTO.Mod;
 using DTO.ModLoader;
 using DTO.ModVersion;
+using DTO.Shared;
 using DTO.Tag;
 using Microsoft.EntityFrameworkCore;
 
@@ -69,7 +70,7 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
     }
 
 
-    public async Task<PaginatedResult<CollectionDto>> GetByPage(int pageNumber, int pageSize)
+    public async Task<QueryParamsDto<CollectionDto>> GetByPage(int pageNumber, int pageSize)
     {
         var query = context.Collections
             .Include(m => m.Mods)
@@ -128,7 +129,7 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
         }).ToList();
 
 
-        return new PaginatedResult<CollectionDto>()
+        return new QueryParamsDto<CollectionDto>()
         {
             Items = items,
             TotalCount = totalCount,

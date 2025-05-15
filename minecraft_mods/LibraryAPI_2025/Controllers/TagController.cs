@@ -1,5 +1,6 @@
 ﻿using BLL.Interfaces;
 using DAL.Interfaces;
+using DTO.Shared;
 using DTO.Tag;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,7 +15,7 @@ public class TagController(IService<TagDto, CreateTagDto, UpdateTagDto> service)
     
     
     [HttpGet]
-    public async Task<ActionResult<PaginatedResult<TagDto>>> GetByPage([FromQuery] int pageNumber, [FromQuery] int pageSize)
+    public async Task<ActionResult<QueryParamsDto<TagDto>>> GetByPage([FromQuery] int pageNumber, [FromQuery] int pageSize)
     {
         if (pageNumber < 1 || pageSize < 1)
         {

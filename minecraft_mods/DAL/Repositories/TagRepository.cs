@@ -1,6 +1,7 @@
 ﻿using DAL.EF;
 using DAL.Entities;
 using DAL.Interfaces;
+using DTO.Shared;
 using DTO.Tag;
 using DTO.Tag;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +25,7 @@ public class TagRepository(ApplicationContext context) : IRepository<TagDto, Cre
     }
 
 
-    public async Task<PaginatedResult<TagDto>> GetByPage(int pageNumber, int pageSize)
+    public async Task<QueryParamsDto<TagDto>> GetByPage(int pageNumber, int pageSize)
     {
         var query = context.Tags.AsNoTracking();
         var totalCount = await query.CountAsync();
@@ -43,7 +44,7 @@ public class TagRepository(ApplicationContext context) : IRepository<TagDto, Cre
         }).ToList();
 
 
-        return new PaginatedResult<TagDto>()
+        return new QueryParamsDto<TagDto>()
         {
             Items = items,
             TotalCount = totalCount,

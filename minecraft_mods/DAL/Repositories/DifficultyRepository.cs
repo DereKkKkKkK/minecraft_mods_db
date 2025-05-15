@@ -2,6 +2,7 @@
 using DAL.Entities;
 using DAL.Interfaces;
 using DTO.Difficulty;
+using DTO.Shared;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repositories;
@@ -23,7 +24,7 @@ public class DifficultyRepository(ApplicationContext context) : IRepository<Diff
     }
     
     
-    public async Task<PaginatedResult<DifficultyDto>> GetByPage(int pageNumber, int pageSize)
+    public async Task<QueryParamsDto<DifficultyDto>> GetByPage(int pageNumber, int pageSize)
     {
         var query = context.Difficulties.AsNoTracking();
         var totalCount = await query.CountAsync();
@@ -42,7 +43,7 @@ public class DifficultyRepository(ApplicationContext context) : IRepository<Diff
         }).ToList();
 
 
-        return new PaginatedResult<DifficultyDto>()
+        return new QueryParamsDto<DifficultyDto>()
         {
             Items = items,
             TotalCount = totalCount,

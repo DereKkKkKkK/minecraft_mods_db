@@ -1,6 +1,7 @@
 ﻿using BLL.Interfaces;
 using DAL.Interfaces;
 using DTO.ModLoader;
+using DTO.Shared;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryAPI_2025.Controllers;
@@ -15,7 +16,7 @@ public class ModLoaderController(IService<ModLoaderDto, CreateModLoaderDto, Upda
     
     
     [HttpGet]
-    public async Task<ActionResult<PaginatedResult<ModLoaderDto>>> GetByPage([FromQuery] int pageNumber, [FromQuery] int pageSize)
+    public async Task<ActionResult<QueryParamsDto<ModLoaderDto>>> GetByPage([FromQuery] int pageNumber, [FromQuery] int pageSize)
     {
         if (pageNumber < 1 || pageSize < 1)
         {

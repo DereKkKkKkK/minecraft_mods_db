@@ -2,6 +2,7 @@
 using DAL.Entities;
 using DAL.Interfaces;
 using DTO.Developer;
+using DTO.Shared;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repositories;
@@ -23,7 +24,7 @@ public class DeveloperRepository(ApplicationContext context) : IRepository<Devel
     }
     
     
-    public async Task<PaginatedResult<DeveloperDto>> GetByPage(int pageNumber, int pageSize)
+    public async Task<QueryParamsDto<DeveloperDto>> GetByPage(int pageNumber, int pageSize)
     {
         var query = context.Developers.AsNoTracking();
         var totalCount = await query.CountAsync();
@@ -42,7 +43,7 @@ public class DeveloperRepository(ApplicationContext context) : IRepository<Devel
         }).ToList();
 
 
-        return new PaginatedResult<DeveloperDto>()
+        return new QueryParamsDto<DeveloperDto>()
         {
             Items = items,
             TotalCount = totalCount,

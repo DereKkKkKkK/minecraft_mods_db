@@ -1,6 +1,7 @@
 ﻿using BLL.Interfaces;
 using DAL.Interfaces;
 using DTO.Developer;
+using DTO.Shared;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +17,7 @@ public class DeveloperController(IService<DeveloperDto, CreateDeveloperDto, Upda
     
     
     [HttpGet]
-    public async Task<ActionResult<PaginatedResult<DeveloperDto>>> GetByPage([FromQuery] int pageNumber, [FromQuery] int pageSize)
+    public async Task<ActionResult<QueryParamsDto<DeveloperDto>>> GetByPage([FromQuery] int pageNumber, [FromQuery] int pageSize)
     {
         if (pageNumber < 1 || pageSize < 1)
         {

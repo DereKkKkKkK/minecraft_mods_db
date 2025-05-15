@@ -1,4 +1,6 @@
-﻿namespace DAL.Repositories;
+﻿using DTO.Shared;
+
+namespace DAL.Repositories;
 using DAL.EF;
 using DAL.Entities;
 using DAL.Interfaces;
@@ -22,7 +24,7 @@ public class FocusRepository(ApplicationContext context) : IRepository<FocusDto,
     }
     
     
-    public async Task<PaginatedResult<FocusDto>> GetByPage(int pageNumber, int pageSize)
+    public async Task<QueryParamsDto<FocusDto>> GetByPage(int pageNumber, int pageSize)
     {
         var query = context.Focuses.AsNoTracking();
         var totalCount = await query.CountAsync();
@@ -41,7 +43,7 @@ public class FocusRepository(ApplicationContext context) : IRepository<FocusDto,
         }).ToList();
 
 
-        return new PaginatedResult<FocusDto>()
+        return new QueryParamsDto<FocusDto>()
         {
             Items = items,
             TotalCount = totalCount,

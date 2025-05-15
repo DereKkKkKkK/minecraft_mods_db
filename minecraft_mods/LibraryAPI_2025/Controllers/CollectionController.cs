@@ -1,6 +1,7 @@
 ﻿using BLL.Interfaces;
 using DAL.Interfaces;
 using DTO.Collection;
+using DTO.Shared;
 using Microsoft.AspNetCore.Mvc;
 namespace LibraryAPI_2025.Controllers;
 
@@ -15,7 +16,7 @@ public class CollectionController(IService<CollectionDto, CreateCollectionDto, U
     
     
     [HttpGet]
-    public async Task<ActionResult<PaginatedResult<CollectionDto>>> GetByPage([FromQuery] int pageNumber, [FromQuery] int pageSize)
+    public async Task<ActionResult<QueryParamsDto<CollectionDto>>> GetByPage([FromQuery] int pageNumber, [FromQuery] int pageSize)
     {
         if (pageNumber < 1 || pageSize < 1)
         {

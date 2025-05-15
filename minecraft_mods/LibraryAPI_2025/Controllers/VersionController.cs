@@ -1,6 +1,7 @@
 ﻿using BLL.Interfaces;
 using DAL.Interfaces;
 using DTO.ModVersion;
+using DTO.Shared;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryAPI_2025.Controllers;
@@ -14,7 +15,7 @@ public class VersionController(IService<ModVersionDto, CreateModVersionDto, Upda
     
     
     [HttpGet]
-    public async Task<ActionResult<PaginatedResult<ModVersionDto>>> GetByPage([FromQuery] int pageNumber, [FromQuery] int pageSize)
+    public async Task<ActionResult<QueryParamsDto<ModVersionDto>>> GetByPage([FromQuery] int pageNumber, [FromQuery] int pageSize)
     {
         if (pageNumber < 1 || pageSize < 1)
         {
