@@ -176,10 +176,19 @@
           }
         }
       },
+      "System.Linq.Dynamic.Core/1.6.3": {
+        "runtime": {
+          "lib/net9.0/System.Linq.Dynamic.Core.dll": {
+            "assemblyVersion": "1.6.3.0",
+            "fileVersion": "1.6.3.0"
+          }
+        }
+      },
       "DAL/1.0.0": {
         "dependencies": {
           "DTO": "1.0.0",
-          "Npgsql.EntityFrameworkCore.PostgreSQL": "9.0.4"
+          "Npgsql.EntityFrameworkCore.PostgreSQL": "9.0.4",
+          "System.Linq.Dynamic.Core": "1.6.3"
         },
         "runtime": {
           "DAL.dll": {
@@ -308,6 +317,13 @@
       "sha512": "sha512-mw5vcY2IEc7L+IeGrxpp/J5OSnCcjkjAgJYCm/eD52wpZze8zsSifdqV7zXslSMmfJG2iIUGZyo3KuDtEFKwMQ==",
       "path": "npgsql.entityframeworkcore.postgresql/9.0.4",
       "hashPath": "npgsql.entityframeworkcore.postgresql.9.0.4.nupkg.sha512"
+    },
+    "System.Linq.Dynamic.Core/1.6.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-y21D6o5aEwZkDetF8PopQJVn/p0sRU/pPc3RVH0KPUjskRzgep4nINtPHppFktrSjgde4+F6ZuajXU7aZW4k4Q==",
+      "path": "system.linq.dynamic.core/1.6.3",
+      "hashPath": "system.linq.dynamic.core.1.6.3.nupkg.sha512"
     },
     "DAL/1.0.0": {
       "type": "project",

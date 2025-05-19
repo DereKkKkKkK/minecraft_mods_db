@@ -7,6 +7,7 @@ using DTO.ModVersion;
 using DTO.Shared;
 using DTO.Tag;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Dynamic.Core;
 namespace DAL.Repositories;
 
 public class ModRepository(ApplicationContext context) : IRepository<ModDto, CreateModDto, UpdateModDto>
@@ -57,22 +58,18 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
 
     public async Task<QueryParamsDto<ModDto>> GetByPage(QueryParamsDto<ModDto> queryParams)
     {
+        var totalCount = await context.Mods.CountAsync();
+        string sorting = $"{queryParams.SortBy} {(queryParams.OrderBy?.ToLower() == "desc" ? "descending" : "ascending")}";
         
-        var query = context.Mods
+        
+        var mods = context.Mods
             .Include(m => m.Versions)
             .Include(m => m.ModLoaders)
             .Include(m => m.Tags)
-            .AsNoTracking();
-        
-        
-        var totalCount = await context.Mods.CountAsync();
-        
-        
-        
-        var mods = query
             .Skip((queryParams.PageNumber - 1) * queryParams.PageSize)
             .Take(queryParams.PageSize)
             .AsQueryable();
+        
         
         if (queryParams.Search != string.Empty)
         {
@@ -82,14 +79,26 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
                     || m.Description.ToLower().Contains(queryParams.Search.ToLower())
                     );
         }
-        
         if (queryParams.VersionIds.Any())
         {
             mods = mods
                 .Where(m => m.Versions.Any(v => queryParams.VersionIds.Contains(v.Id)));
         }
+        if (queryParams.ModLoaderIds.Any())
+        {
+            mods = mods
+                .Where(m => m.ModLoaders.Any(l => queryParams.ModLoaderIds.Contains(l.Id)));
+        }
+        if (queryParams.TagIds.Any())
+        {
+            mods = mods
+                .Where(m => m.Tags.Any(t => queryParams.TagIds.Contains(t.Id)));
+        }
         
-        var items = mods.Select(m => new ModDto()
+        
+        var items = mods
+            .OrderBy(sorting)
+            .Select(m => new ModDto()
         {
             Id = m.Id,
             Title = m.Title,

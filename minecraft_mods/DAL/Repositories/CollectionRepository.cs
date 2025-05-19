@@ -8,7 +8,7 @@ using DTO.Mod;
 using DTO.ModLoader;
 using DTO.ModVersion;
 using DTO.Shared;
-using DTO.Tag;
+using System.Linq.Dynamic.Core;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repositories;
@@ -32,7 +32,6 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
             TimeToComplete = collection.TimeToComplete,
             CreatedAt = collection.CreatedAt,
             UpdatedAt = collection.UpdatedAt,
-            
             Mods = collection.Mods.Select(m => new ModForCollectionDto()
             {
                 Id = m.Id,
@@ -40,31 +39,37 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
                 Description = m.Description,
                 IsClientside = m.IsClientside,
                 Downloads = m.Downloads,
-                Size = m.Size
+                Size = m.Size,
+                CreatedAt = m.CreatedAt,
+                UpdatedAt = m.UpdatedAt
             }).ToList(),
-            
             Focuses = collection.Focuses.Select(f => new FocusDto()
             {
                 Id = f.Id,
                 Name = f.Name,
+                CreatedAt = f.CreatedAt,
+                UpdatedAt = f.UpdatedAt,
             }).ToList(),
-            
             Version = new ModVersionDto()
             {
                 Id = collection.Version.Id,
-                Title = collection.Version.Title
+                Title = collection.Version.Title,
+                CreatedAt = collection.Version.CreatedAt,
+                UpdatedAt = collection.Version.UpdatedAt
             },
-            
             ModLoader = new ModLoaderDto()
             {
                 Id = collection.ModLoader.Id,
-                Title = collection.ModLoader.Title
+                Title = collection.ModLoader.Title,
+                CreatedAt = collection.ModLoader.CreatedAt,
+                UpdatedAt = collection.ModLoader.UpdatedAt
             },
-            
             Difficulty = new DifficultyDto()
             {
                 Id = collection.Difficulty.Id,
-                Title = collection.Difficulty.Title
+                Title = collection.Difficulty.Title,
+                CreatedAt = collection.Difficulty.CreatedAt,
+                UpdatedAt = collection.Difficulty.UpdatedAt
             }
         }).ToList();
     }
@@ -72,29 +77,59 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
 
     public async Task<QueryParamsDto<CollectionDto>> GetByPage(QueryParamsDto<CollectionDto> queryParams)
     {
-        var query = context.Collections
+        var totalCount = await context.Mods.CountAsync();
+        string sorting = $"{queryParams.SortBy} {(queryParams.OrderBy?.ToLower() == "desc" ? "descending" : "ascending")}";
+
+
+        var collections = context.Collections
             .Include(m => m.Mods)
             .Include(m => m.Focuses)
             .Include(c => c.Version)
             .Include(c => c.ModLoader)
             .Include(c => c.Difficulty)
-            .AsNoTracking();
-
-
-        var totalCount = await context.Mods.CountAsync();
-
-
-        var collections = await query
             .Skip((queryParams.PageNumber - 1) * queryParams.PageSize)
             .Take(queryParams.PageSize)
-            .ToListAsync();
+            .AsQueryable();
         
         
-        var items = collections.Select(c => new CollectionDto()
+        if (queryParams.Search != string.Empty)
+        {
+            collections = collections
+                .Where(c =>
+                    c.Name.ToLower().Contains(queryParams.Search.ToLower())
+                );
+        }
+        if (queryParams.FocusIds.Any())
+        {
+            collections = collections
+                .Where(m => m.Focuses.Any(f => queryParams.FocusIds.Contains(f.Id)));
+        }
+        if (queryParams.VersionIds.Any())
+        {
+            collections = collections
+                .Where(c => queryParams.VersionIds.Contains(c.Version.Id));
+        }
+        if (queryParams.ModLoaderIds.Any())
+        {
+            collections = collections
+                .Where(c => queryParams.ModLoaderIds.Contains(c.ModLoader.Id));
+        }
+        if (queryParams.DifficultyIds.Any())
+        {
+            collections = collections
+                .Where(c => queryParams.DifficultyIds.Contains(c.Difficulty.Id));
+        }
+        
+        
+        var items = collections
+            .OrderBy(sorting)
+            .Select(c => new CollectionDto()
         {
             Id = c.Id,
             Name = c.Name,
             TimeToComplete = c.TimeToComplete,
+            CreatedAt = c.CreatedAt,
+            UpdatedAt = c.UpdatedAt,
             Mods = c.Mods.Select(m => new ModForCollectionDto()
             {
                 Id = m.Id,
@@ -103,29 +138,37 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
                 IsClientside = m.IsClientside,
                 Downloads = m.Downloads,
                 Size = m.Size,
+                CreatedAt = m.CreatedAt,
+                UpdatedAt = m.UpdatedAt
             }).ToList(),
             Focuses = c.Focuses.Select(f => new FocusDto()
             {
                 Id = f.Id,
                 Name = f.Name,
+                CreatedAt = f.CreatedAt,
+                UpdatedAt = f.UpdatedAt
             }).ToList(),
             Version = new ModVersionDto()
             {
                 Id = c.Version.Id,
-                Title = c.Version.Title
+                Title = c.Version.Title,
+                CreatedAt = c.Version.CreatedAt,
+                UpdatedAt = c.Version.UpdatedAt
             },
             ModLoader = new ModLoaderDto()
             {
                 Id = c.ModLoader.Id,
-                Title = c.ModLoader.Title
+                Title = c.ModLoader.Title,
+                CreatedAt = c.ModLoader.CreatedAt,
+                UpdatedAt = c.ModLoader.UpdatedAt
             },
             Difficulty = new DifficultyDto()
             {
                 Id = c.Difficulty.Id,
-                Title = c.Difficulty.Title
-            },
-            CreatedAt = c.CreatedAt,
-            UpdatedAt = c.UpdatedAt,
+                Title = c.Difficulty.Title,
+                CreatedAt = c.Difficulty.CreatedAt,
+                UpdatedAt = c.Difficulty.UpdatedAt
+            }
         }).ToList();
 
 
@@ -154,6 +197,8 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
             Id = collection.Id,
             Name = collection.Name,
             TimeToComplete = collection.TimeToComplete,
+            CreatedAt = collection.CreatedAt,
+            UpdatedAt = collection.UpdatedAt,
             Mods = collection.Mods.Select(m => new ModForCollectionDto()
             {
                 Id = m.Id,
@@ -162,29 +207,37 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
                 IsClientside = m.IsClientside,
                 Downloads = m.Downloads,
                 Size = m.Size,
+                CreatedAt = m.CreatedAt,
+                UpdatedAt = m.UpdatedAt
             }).ToList(),
             Focuses = collection.Focuses.Select(f => new FocusDto()
             {
                 Id = f.Id,
                 Name = f.Name,
+                CreatedAt = f.CreatedAt,
+                UpdatedAt = f.UpdatedAt
             }).ToList(),
             Version = new ModVersionDto()
             {
                 Id = collection.Version.Id,
-                Title = collection.Version.Title
+                Title = collection.Version.Title,
+                CreatedAt = collection.Version.CreatedAt,
+                UpdatedAt = collection.Version.UpdatedAt
             },
             ModLoader = new ModLoaderDto()
             {
                 Id = collection.ModLoader.Id,
-                Title = collection.ModLoader.Title
+                Title = collection.ModLoader.Title,
+                CreatedAt = collection.ModLoader.CreatedAt,
+                UpdatedAt = collection.ModLoader.UpdatedAt
             },
             Difficulty = new DifficultyDto()
             {
                 Id = collection.Difficulty.Id,
-                Title = collection.Difficulty.Title
-            },
-            CreatedAt = collection.CreatedAt,
-            UpdatedAt = collection.UpdatedAt
+                Title = collection.Difficulty.Title,
+                CreatedAt = collection.Difficulty.CreatedAt,
+                UpdatedAt = collection.Difficulty.UpdatedAt
+            }
         };
     }
 
@@ -224,6 +277,8 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
             Id = createdCollection.Id,
             Name = createdCollection.Name,
             TimeToComplete = createdCollection.TimeToComplete,
+            CreatedAt = createdCollection.CreatedAt,
+            UpdatedAt = createdCollection.UpdatedAt,
             Mods = createdCollection.Mods.Select(m => new ModForCollectionDto()
             {
                 Id = m.Id,
@@ -232,29 +287,37 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
                 IsClientside = m.IsClientside,
                 Downloads = m.Downloads,
                 Size = m.Size,
+                CreatedAt = m.CreatedAt,
+                UpdatedAt = m.UpdatedAt
             }).ToList(),
             Focuses = createdCollection.Focuses.Select(f => new FocusDto()
             {
                 Id = f.Id,
                 Name = f.Name,
+                CreatedAt = f.CreatedAt,
+                UpdatedAt = f.UpdatedAt
             }).ToList(),
             Version = new ModVersionDto()
             {
                 Id = createdCollection.Version.Id,
-                Title = createdCollection.Version.Title
+                Title = createdCollection.Version.Title,
+                CreatedAt = createdCollection.Version.CreatedAt,
+                UpdatedAt = createdCollection.Version.UpdatedAt
             },
             ModLoader = new ModLoaderDto()
             {
                 Id = createdCollection.ModLoader.Id,
-                Title = createdCollection.ModLoader.Title
+                Title = createdCollection.ModLoader.Title,
+                CreatedAt = createdCollection.ModLoader.CreatedAt,
+                UpdatedAt = createdCollection.ModLoader.UpdatedAt
             },
             Difficulty = new DifficultyDto()
             {
                 Id = createdCollection.Difficulty.Id,
-                Title = createdCollection.Difficulty.Title
-            },
-            CreatedAt = createdCollection.CreatedAt,
-            UpdatedAt = createdCollection.UpdatedAt
+                Title = createdCollection.Difficulty.Title,
+                CreatedAt = createdCollection.Difficulty.CreatedAt,
+                UpdatedAt = createdCollection.Difficulty.UpdatedAt
+            }
         };
     }
 
@@ -299,6 +362,8 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
             Id = updatedCollection.Id,
             Name = updatedCollection.Name,
             TimeToComplete = updatedCollection.TimeToComplete,
+            CreatedAt = updatedCollection.CreatedAt,
+            UpdatedAt = updatedCollection.UpdatedAt,
             Mods = updatedCollection.Mods.Select(m => new ModForCollectionDto()
             {
                 Id = m.Id,
@@ -307,29 +372,37 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
                 IsClientside = m.IsClientside,
                 Downloads = m.Downloads,
                 Size = m.Size,
+                CreatedAt = m.CreatedAt,
+                UpdatedAt = m.UpdatedAt
             }).ToList(),
             Focuses = updatedCollection.Focuses.Select(f => new FocusDto()
             {
                 Id = f.Id,
                 Name = f.Name,
+                CreatedAt = f.CreatedAt,
+                UpdatedAt = f.UpdatedAt
             }).ToList(),
             Version = new ModVersionDto()
             {
                 Id = updatedCollection.Version.Id,
-                Title = updatedCollection.Version.Title
+                Title = updatedCollection.Version.Title,
+                CreatedAt = updatedCollection.Version.CreatedAt,
+                UpdatedAt = updatedCollection.Version.UpdatedAt
             },
             ModLoader = new ModLoaderDto()
             {
                 Id = updatedCollection.ModLoader.Id,
-                Title = updatedCollection.ModLoader.Title
+                Title = updatedCollection.ModLoader.Title,
+                CreatedAt = updatedCollection.ModLoader.CreatedAt,
+                UpdatedAt = updatedCollection.ModLoader.UpdatedAt
             },
             Difficulty = new DifficultyDto()
             {
                 Id = updatedCollection.Difficulty.Id,
-                Title = updatedCollection.Difficulty.Title
-            },
-            CreatedAt = updatedCollection.CreatedAt,
-            UpdatedAt = updatedCollection.UpdatedAt
+                Title = updatedCollection.Difficulty.Title,
+                CreatedAt = updatedCollection.Difficulty.CreatedAt,
+                UpdatedAt = updatedCollection.Difficulty.UpdatedAt
+            }
         };
     }
 
