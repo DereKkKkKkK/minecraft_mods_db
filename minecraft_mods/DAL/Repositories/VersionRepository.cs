@@ -24,13 +24,13 @@ public class VersionRepository(ApplicationContext context) : IRepository<ModVers
     }
     
     
-    public async Task<QueryParamsDto<ModVersionDto>> GetByPage(int pageNumber, int pageSize)
+    public async Task<QueryParamsDto<ModVersionDto>> GetByPage(QueryParamsDto<ModVersionDto> queryParams)
     {
         var query = context.ModVersions.AsNoTracking();
         var totalCount = await query.CountAsync();
         var tags = await query
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
+            .Skip((queryParams.PageNumber - 1) * queryParams.PageSize)
+            .Take(queryParams.PageSize)
             .ToListAsync();
         
         
@@ -47,8 +47,8 @@ public class VersionRepository(ApplicationContext context) : IRepository<ModVers
         {
             Items = items,
             TotalCount = totalCount,
-            PageNumber = pageNumber,
-            PageSize = pageSize
+            PageNumber = queryParams.PageNumber,
+            PageSize = queryParams.PageSize
         };
     }
 

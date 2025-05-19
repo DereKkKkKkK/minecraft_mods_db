@@ -25,13 +25,13 @@ public class TagRepository(ApplicationContext context) : IRepository<TagDto, Cre
     }
 
 
-    public async Task<QueryParamsDto<TagDto>> GetByPage(int pageNumber, int pageSize)
+    public async Task<QueryParamsDto<TagDto>> GetByPage(QueryParamsDto<TagDto> queryParams)
     {
         var query = context.Tags.AsNoTracking();
         var totalCount = await query.CountAsync();
         var tags = await query
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
+            .Skip((queryParams.PageNumber - 1) * queryParams.PageSize)
+            .Take(queryParams.PageSize)
             .ToListAsync();
         
         
@@ -48,8 +48,8 @@ public class TagRepository(ApplicationContext context) : IRepository<TagDto, Cre
         {
             Items = items,
             TotalCount = totalCount,
-            PageNumber = pageNumber,
-            PageSize = pageSize
+            PageNumber = queryParams.PageNumber,
+            PageSize = queryParams.PageSize
         };
     }
 

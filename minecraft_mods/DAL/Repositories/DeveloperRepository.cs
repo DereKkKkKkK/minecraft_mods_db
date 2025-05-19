@@ -24,13 +24,13 @@ public class DeveloperRepository(ApplicationContext context) : IRepository<Devel
     }
     
     
-    public async Task<QueryParamsDto<DeveloperDto>> GetByPage(int pageNumber, int pageSize)
+    public async Task<QueryParamsDto<DeveloperDto>> GetByPage(QueryParamsDto<DeveloperDto> queryParams)
     {
         var query = context.Developers.AsNoTracking();
         var totalCount = await query.CountAsync();
         var tags = await query
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
+            .Skip((queryParams.PageNumber - 1) * queryParams.PageSize)
+            .Take(queryParams.PageSize)
             .ToListAsync();
         
         
@@ -47,8 +47,8 @@ public class DeveloperRepository(ApplicationContext context) : IRepository<Devel
         {
             Items = items,
             TotalCount = totalCount,
-            PageNumber = pageNumber,
-            PageSize = pageSize
+            PageNumber = queryParams.PageNumber,
+            PageSize = queryParams.PageSize
         };
     }
 

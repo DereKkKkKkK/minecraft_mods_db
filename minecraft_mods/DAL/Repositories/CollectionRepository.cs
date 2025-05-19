@@ -70,7 +70,7 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
     }
 
 
-    public async Task<QueryParamsDto<CollectionDto>> GetByPage(int pageNumber, int pageSize)
+    public async Task<QueryParamsDto<CollectionDto>> GetByPage(QueryParamsDto<CollectionDto> queryParams)
     {
         var query = context.Collections
             .Include(m => m.Mods)
@@ -85,8 +85,8 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
 
 
         var collections = await query
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
+            .Skip((queryParams.PageNumber - 1) * queryParams.PageSize)
+            .Take(queryParams.PageSize)
             .ToListAsync();
         
         
@@ -133,8 +133,8 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
         {
             Items = items,
             TotalCount = totalCount,
-            PageNumber = pageNumber,
-            PageSize = pageSize
+            PageNumber = queryParams.PageNumber,
+            PageSize = queryParams.PageSize
         };
     }
 

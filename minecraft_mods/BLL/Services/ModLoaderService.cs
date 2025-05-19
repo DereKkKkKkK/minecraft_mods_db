@@ -8,7 +8,7 @@ namespace BLL.Services;
 public class ModLoaderService(IRepository<ModLoaderDto, CreateModLoaderDto, UpdateModLoaderDto> repository) : IService<ModLoaderDto, CreateModLoaderDto, UpdateModLoaderDto>
 {
     public async Task<List<ModLoaderDto>> GetAll() => await repository.GetAll();
-    public async Task<QueryParamsDto<ModLoaderDto>> GetByPage(int pageNumber, int pageSize) => await repository.GetByPage(pageNumber, pageSize);
+    public async Task<QueryParamsDto<ModLoaderDto>> GetByPage(QueryParamsDto<ModLoaderDto> queryParams) => await repository.GetByPage(queryParams);
     public async Task<ModLoaderDto> GetById(Guid id) => await repository.GetById(id);
     public async Task<ModLoaderDto> Create(CreateModLoaderDto modLoader) => await repository.Create(modLoader);
     public async Task<ModLoaderDto> Update(UpdateModLoaderDto modLoader) => await repository.Update(modLoader);

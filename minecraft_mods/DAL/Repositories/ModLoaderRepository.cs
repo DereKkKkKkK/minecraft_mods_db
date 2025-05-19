@@ -24,13 +24,13 @@ public class ModLoaderRepository(ApplicationContext context) : IRepository<ModLo
     }
     
     
-    public async Task<QueryParamsDto<ModLoaderDto>> GetByPage(int pageNumber, int pageSize)
+    public async Task<QueryParamsDto<ModLoaderDto>> GetByPage(QueryParamsDto<ModLoaderDto> queryParams)
     {
         var query = context.ModLoaders.AsNoTracking();
         var totalCount = await query.CountAsync();
         var tags = await query
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
+            .Skip((queryParams.PageNumber - 1) * queryParams.PageSize)
+            .Take(queryParams.PageSize)
             .ToListAsync();
         
         
@@ -47,8 +47,8 @@ public class ModLoaderRepository(ApplicationContext context) : IRepository<ModLo
         {
             Items = items,
             TotalCount = totalCount,
-            PageNumber = pageNumber,
-            PageSize = pageSize
+            PageNumber = queryParams.PageNumber,
+            PageSize = queryParams.PageSize
         };
     }
 

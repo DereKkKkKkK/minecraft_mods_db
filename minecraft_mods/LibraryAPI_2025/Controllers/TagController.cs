@@ -15,15 +15,15 @@ public class TagController(IService<TagDto, CreateTagDto, UpdateTagDto> service)
     
     
     [HttpGet]
-    public async Task<ActionResult<QueryParamsDto<TagDto>>> GetByPage([FromQuery] int pageNumber, [FromQuery] int pageSize)
+    public async Task<ActionResult<QueryParamsDto<TagDto>>> GetByPage([FromQuery] QueryParamsDto<TagDto> queryParams)
     {
-        if (pageNumber < 1 || pageSize < 1)
+        if (queryParams.PageNumber < 1 || queryParams.PageSize < 1)
         {
             return BadRequest("Page number and page size must be positive integers.");
         }
         
 
-        var result = await service.GetByPage(pageNumber, pageSize);
+        var result = await service.GetByPage(queryParams);
         return Ok(result);
     }
     

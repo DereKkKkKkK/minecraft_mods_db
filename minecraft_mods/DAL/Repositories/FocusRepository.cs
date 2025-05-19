@@ -24,13 +24,13 @@ public class FocusRepository(ApplicationContext context) : IRepository<FocusDto,
     }
     
     
-    public async Task<QueryParamsDto<FocusDto>> GetByPage(int pageNumber, int pageSize)
+    public async Task<QueryParamsDto<FocusDto>> GetByPage(QueryParamsDto<FocusDto> queryParams)
     {
         var query = context.Focuses.AsNoTracking();
         var totalCount = await query.CountAsync();
         var tags = await query
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
+            .Skip((queryParams.PageNumber - 1) * queryParams.PageSize)
+            .Take(queryParams.PageSize)
             .ToListAsync();
         
         
@@ -47,8 +47,8 @@ public class FocusRepository(ApplicationContext context) : IRepository<FocusDto,
         {
             Items = items,
             TotalCount = totalCount,
-            PageNumber = pageNumber,
-            PageSize = pageSize
+            PageNumber = queryParams.PageNumber,
+            PageSize = queryParams.PageSize
         };
     }
 

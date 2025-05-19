@@ -8,7 +8,7 @@ namespace BLL.Services;
 public class TagService(IRepository<TagDto, CreateTagDto, UpdateTagDto> repository) : IService<TagDto, CreateTagDto, UpdateTagDto>
 {
     public async Task<List<TagDto>> GetAll() => await repository.GetAll();
-    public async Task<QueryParamsDto<TagDto>> GetByPage(int pageNumber, int pageSize) => await repository.GetByPage(pageNumber, pageSize);
+    public async Task<QueryParamsDto<TagDto>> GetByPage(QueryParamsDto<TagDto> queryParams) => await repository.GetByPage(queryParams);
     public async Task<TagDto> GetById(Guid id) => await repository.GetById(id);
     public async Task<TagDto> Create(CreateTagDto tag) => await repository.Create(tag);
     public async Task<TagDto> Update(UpdateTagDto tag) => await repository.Update(tag);

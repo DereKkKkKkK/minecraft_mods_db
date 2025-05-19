@@ -15,15 +15,14 @@ public class VersionController(IService<ModVersionDto, CreateModVersionDto, Upda
     
     
     [HttpGet]
-    public async Task<ActionResult<QueryParamsDto<ModVersionDto>>> GetByPage([FromQuery] int pageNumber, [FromQuery] int pageSize)
+    public async Task<ActionResult<QueryParamsDto<ModVersionDto>>> GetByPage([FromQuery] QueryParamsDto<ModVersionDto> queryParams)
     {
-        if (pageNumber < 1 || pageSize < 1)
+        if (queryParams.PageNumber < 1 || queryParams.PageSize < 1)
         {
             return BadRequest("Page number and page size must be positive integers.");
         }
-        
 
-        var result = await service.GetByPage(pageNumber, pageSize);
+        var result = await service.GetByPage(queryParams);
         return Ok(result);
     }
     

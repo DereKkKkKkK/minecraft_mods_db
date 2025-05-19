@@ -55,8 +55,9 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
     }
 
 
-    public async Task<QueryParamsDto<ModDto>> GetByPage(int pageNumber, int pageSize)
+    public async Task<QueryParamsDto<ModDto>> GetByPage(QueryParamsDto<ModDto> queryParams)
     {
+        
         var query = context.Mods
             .Include(m => m.Versions)
             .Include(m => m.ModLoaders)
@@ -67,11 +68,26 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
         var totalCount = await context.Mods.CountAsync();
         
         
-        var mods = await query
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToListAsync();
         
+        var mods = query
+            .Skip((queryParams.PageNumber - 1) * queryParams.PageSize)
+            .Take(queryParams.PageSize)
+            .AsQueryable();
+        
+        if (queryParams.Search != string.Empty)
+        {
+            mods = mods
+                .Where(m =>
+                    m.Title.ToLower().Contains(queryParams.Search.ToLower())
+                    || m.Description.ToLower().Contains(queryParams.Search.ToLower())
+                    );
+        }
+        
+        if (queryParams.VersionIds.Any())
+        {
+            mods = mods
+                .Where(m => m.Versions.Any(v => queryParams.VersionIds.Contains(v.Id)));
+        }
         
         var items = mods.Select(m => new ModDto()
         {
@@ -111,8 +127,8 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
         {
             Items = items,
             TotalCount = totalCount,
-            PageNumber = pageNumber,
-            PageSize = pageSize
+            PageNumber = queryParams.PageNumber,
+            PageSize = queryParams.PageSize
         };
     }
 
