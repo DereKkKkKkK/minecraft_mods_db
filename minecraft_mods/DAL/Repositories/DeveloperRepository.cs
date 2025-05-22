@@ -58,6 +58,12 @@ public class DeveloperRepository(ApplicationContext context) : IRepository<Devel
         Developer? developer = await context.Developers.FindAsync(id);
 
 
+        if (developer == null)
+        {
+            throw new KeyNotFoundException($"Developer with id {id} not found");
+        }
+        
+        
         return new DeveloperDto()
         {
             Id = developer.Id,
@@ -76,6 +82,17 @@ public class DeveloperRepository(ApplicationContext context) : IRepository<Devel
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
+        
+        
+        if (string.IsNullOrWhiteSpace(developer.Nickname))
+        {
+            throw new ArgumentException("Nickname cannot be empty");
+        }
+        
+        if (developer.Nickname.Length > 100)
+        {
+            throw new ArgumentException("Nickname is too long (max 100 chars)");
+        }
         
         
         context.Developers.Add(createdDeveloper);
@@ -97,8 +114,25 @@ public class DeveloperRepository(ApplicationContext context) : IRepository<Devel
         Developer? updatedDeveloper = await context.Developers.FindAsync(developer.Id);
         
         
+        if (updatedDeveloper == null)
+        {
+            throw new KeyNotFoundException($"Developer with id {developer.Id} not found");
+        }
+        
+        
         updatedDeveloper.Nickname = developer.Nickname;
         updatedDeveloper.UpdatedAt = DateTime.UtcNow;
+        
+        
+        if (string.IsNullOrWhiteSpace(developer.Nickname))
+        {
+            throw new ArgumentException("Nickname cannot be empty");
+        }
+        
+        if (developer.Nickname.Length > 100)
+        {
+            throw new ArgumentException("Nickname is too long (max 100 chars)");
+        }
         
         
         context.Developers.Update(updatedDeveloper);
@@ -118,6 +152,12 @@ public class DeveloperRepository(ApplicationContext context) : IRepository<Devel
     public async Task Delete(Guid id)
     {
         Developer? developer = await context.Developers.FindAsync(id);
+        
+        if (developer == null)
+        {
+            throw new KeyNotFoundException($"Developer with id {id} not found");
+        }
+        
         context.Developers.Remove(developer);
         await context.SaveChangesAsync();
     }

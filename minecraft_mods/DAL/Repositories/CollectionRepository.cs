@@ -192,6 +192,13 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
             .Include(c => c.Difficulty)
             .FirstOrDefaultAsync(c => c.Id == id);
         
+        
+        if (collection == null)
+        {
+            throw new KeyNotFoundException($"Collection with id {id} not found");
+        }
+        
+        
         return new CollectionDto()
         {
             Id = collection.Id,
@@ -248,13 +255,47 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
             .Where(m => collection.ModsIds.Contains(m.Id))
             .ToListAsync();
         
+        
         var focuses = await context.Focuses
             .Where(f => collection.FocusesIds.Contains(f.Id))
             .ToListAsync();
         
+        
         var version = await context.ModVersions.FindAsync(collection.VersionId);
         var modLoader = await context.ModLoaders.FindAsync(collection.ModLoaderId);
         var difficulty = await context.Difficulties.FindAsync(collection.DifficultyId);
+        
+        
+        if (string.IsNullOrWhiteSpace(collection.Name))
+        {
+            throw new ArgumentException("Name cannot be empty");
+        }
+        
+        if (collection.Name.Length > 100)
+        {
+            throw new ArgumentException("Name is too long (max 100 chars)");
+        }
+        
+        if (collection.ModsIds == null || !collection.ModsIds.Any())
+        {
+            throw new ArgumentException("At least one mod must be specified");
+        }
+
+        if (collection.FocusesIds == null || !collection.FocusesIds.Any())
+        {
+            throw new ArgumentException("At least one focus must be specified");
+        }
+
+        if (collection.VersionId == null)
+        {
+            throw new ArgumentException("At least one version must be specified");
+        }
+        
+        if (collection.ModLoaderId == null)
+        {
+            throw new ArgumentException("At least one mod loader must be specified");
+        }
+        
         
         Collection createdCollection = new()
         {
@@ -269,9 +310,11 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
             UpdatedAt = DateTime.UtcNow
         };
 
+        
         context.Collections.Add(createdCollection);
         await context.SaveChangesAsync();
 
+        
         return new CollectionDto()
         {
             Id = createdCollection.Id,
@@ -332,17 +375,27 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
             .Include(c => c.Difficulty)
             .FirstOrDefaultAsync(c => c.Id == collection.Id);
 
+        
+        if (updatedCollection == null)
+        {
+            throw new KeyNotFoundException($"Mod with id {collection.Id} not found");
+        }
+        
+        
         var mods = await context.Mods
             .Where(m => collection.ModsIds.Contains(m.Id))
             .ToListAsync();
+        
         
         var focuses = await context.Focuses
             .Where(f => collection.FocusesIds.Contains(f.Id))
             .ToListAsync();
         
+        
         var version = await context.ModVersions.FindAsync(collection.VersionId);
         var modLoader = await context.ModLoaders.FindAsync(collection.ModLoaderId);
         var difficulty = await context.Difficulties.FindAsync(collection.DifficultyId);
+        
         
         updatedCollection.Name = collection.Name;
         updatedCollection.TimeToComplete = collection.TimeToComplete;
@@ -352,11 +405,43 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
         updatedCollection.ModLoader = modLoader;
         updatedCollection.Difficulty = difficulty;
         updatedCollection.UpdatedAt = DateTime.UtcNow;
+        
+        
+        if (string.IsNullOrWhiteSpace(collection.Name))
+        {
+            throw new ArgumentException("Name cannot be empty");
+        }
+        
+        if (collection.Name.Length > 100)
+        {
+            throw new ArgumentException("Name is too long (max 100 chars)");
+        }
+        
+        if (collection.ModsIds == null || !collection.ModsIds.Any())
+        {
+            throw new ArgumentException("At least one mod must be specified");
+        }
+
+        if (collection.FocusesIds == null || !collection.FocusesIds.Any())
+        {
+            throw new ArgumentException("At least one focus must be specified");
+        }
+
+        if (collection.VersionId == null)
+        {
+            throw new ArgumentException("At least one version must be specified");
+        }
+        
+        if (collection.ModLoaderId == null)
+        {
+            throw new ArgumentException("At least one mod loader must be specified");
+        }
       
         
         context.Collections.Update(updatedCollection);
         await context.SaveChangesAsync();
 
+        
         return new CollectionDto()
         {
             Id = updatedCollection.Id,
@@ -410,6 +495,12 @@ public class CollectionRepository(ApplicationContext context) : IRepository<Coll
     public async Task Delete(Guid id)
     {
         Collection? collection = await context.Collections.FindAsync(id);
+        
+        if (collection == null)
+        {
+            throw new KeyNotFoundException($"Mod with id {id} not found");
+        }
+        
         context.Collections.Remove(collection);
         await context.SaveChangesAsync();
     }

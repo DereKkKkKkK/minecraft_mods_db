@@ -12,6 +12,7 @@ public class Mod : BaseEntity
     public List<ModVersion> Versions { get; set; } = new();
     public List<ModLoader> ModLoaders { get; set; } = new();
     public List<Tag> Tags { get; set; } = new();
+    public List<Developer> Developers { get; set; } = new();
     public List<Collection> Collections { get; set; } = new();
 }
 
@@ -41,5 +42,10 @@ public class ModMap
         builder
             .HasMany(m => m.Tags)
             .WithMany(t => t.Mods);
+        
+        
+        builder
+            .HasMany(m => m.Developers)
+            .WithMany(d => d.Mods);
     }
 }

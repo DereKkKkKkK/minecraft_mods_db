@@ -8,6 +8,8 @@ using DTO.Shared;
 using DTO.Tag;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
+using DTO.Developer;
+
 namespace DAL.Repositories;
 
 public class ModRepository(ApplicationContext context) : IRepository<ModDto, CreateModDto, UpdateModDto>
@@ -18,6 +20,7 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
             .Include(m => m.Versions)
             .Include(m => m.ModLoaders)
             .Include(m => m.Tags)
+            .Include(m => m.Developers)
             .ToListAsync();
 
 
@@ -50,6 +53,13 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
                 CreatedAt = t.CreatedAt,
                 UpdatedAt = t.UpdatedAt
             }).ToList(),
+            Developers = mod.Developers.Select(d => new DeveloperDto()
+            {
+                Id = d.Id,
+                Nickname = d.Nickname,
+                CreatedAt = d.CreatedAt,
+                UpdatedAt = d.UpdatedAt
+            }).ToList(),
             CreatedAt = mod.CreatedAt,
             UpdatedAt = mod.UpdatedAt
         }).ToList();
@@ -66,6 +76,7 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
             .Include(m => m.Versions)
             .Include(m => m.ModLoaders)
             .Include(m => m.Tags)
+            .Include(m => m.Developers)
             .Skip((queryParams.PageNumber - 1) * queryParams.PageSize)
             .Take(queryParams.PageSize)
             .AsQueryable();
@@ -127,6 +138,13 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
                 CreatedAt = t.CreatedAt,
                 UpdatedAt = t.UpdatedAt
             }).ToList(),
+            Developers = m.Developers.Select(d => new DeveloperDto()
+            {
+                Id = d.Id,
+                Nickname = d.Nickname,
+                CreatedAt = d.CreatedAt,
+                UpdatedAt = d.UpdatedAt
+            }).ToList(),
             CreatedAt = m.CreatedAt,
             UpdatedAt = m.UpdatedAt
         }).ToList();
@@ -148,8 +166,15 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
             .Include(m => m.Versions)
             .Include(m => m.ModLoaders)
             .Include(m => m.Tags)
+            .Include(m => m.Developers)
             .FirstOrDefaultAsync(m => m.Id == id);
 
+
+        if (mod == null)
+        {
+            throw new KeyNotFoundException($"Mod with id {id} not found");
+        }
+        
 
         return new ModDto()
         {
@@ -180,6 +205,13 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
                 CreatedAt = t.CreatedAt,
                 UpdatedAt = t.UpdatedAt
             }).ToList(),
+            Developers = mod.Developers.Select(d => new DeveloperDto()
+            {
+                Id = d.Id,
+                Nickname = d.Nickname,
+                CreatedAt = d.CreatedAt,
+                UpdatedAt = d.UpdatedAt
+            }).ToList(),
             CreatedAt = mod.CreatedAt,
             UpdatedAt = mod.UpdatedAt
         };
@@ -203,6 +235,11 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
             .ToListAsync();
         
         
+        var developers = await context.Developers
+            .Where(d => mod.DeveloperIds.Contains(d.Id))
+            .ToListAsync();
+        
+        
         Mod createdMod = new()
         {
             Title = mod.Title,
@@ -210,12 +247,44 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
             Versions = versions,
             ModLoaders = loaders,
             Tags = tags,
+            Developers = developers,
             IsClientside = mod.IsClientside,
             Downloads = mod.Downloads,
             Size = mod.Size,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
+
+
+        if (string.IsNullOrWhiteSpace(mod.Title))
+        {
+            throw new ArgumentException("Title cannot be empty");
+        }
+        
+        if (mod.Title.Length > 100)
+        {
+            throw new ArgumentException("Title is too long (max 100 chars)");
+        }
+        
+        if (mod.Description != null && mod.Description.Length > 1000)
+        {
+            throw new ArgumentException("Description is too long (max 1000 chars)");
+        }
+
+        if (mod.VersionIds == null || !mod.VersionIds.Any())
+        {
+            throw new ArgumentException("At least one version must be specified");
+        }
+
+        if (mod.ModLoaderIds == null || !mod.ModLoaderIds.Any())
+        {
+            throw new ArgumentException("At least one mod loader must be specified");
+        }
+
+        if (mod.DeveloperIds == null || !mod.DeveloperIds.Any())
+        {
+            throw new ArgumentException("At least one developer must be specified");
+        }
         
         
         context.Mods.Add(createdMod);
@@ -226,6 +295,7 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
             .Include(m => m.Versions)
             .Include(m => m.ModLoaders)
             .Include(m => m.Tags)
+            .Include(m => m.Developers)
             .FirstOrDefaultAsync(m => m.Id == createdMod.Id);
 
 
@@ -258,6 +328,13 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
                 CreatedAt = t.CreatedAt,
                 UpdatedAt = t.UpdatedAt
             }).ToList(),
+            Developers = createdMod.Developers.Select(d => new DeveloperDto()
+            {
+                Id = d.Id,
+                Nickname = d.Nickname,
+                CreatedAt = d.CreatedAt,
+                UpdatedAt = d.UpdatedAt
+            }).ToList(),
             CreatedAt = createdMod.CreatedAt,
             UpdatedAt = createdMod.UpdatedAt
         };
@@ -270,7 +347,14 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
             .Include(m => m.Versions)
             .Include(m => m.ModLoaders)
             .Include(m => m.Tags)
+            .Include(m => m.Developers)
             .FirstOrDefaultAsync(m => m.Id == mod.Id);
+
+
+        if (updatedMod == null)
+        {
+            throw new KeyNotFoundException($"Mod with id {mod.Id} not found");
+        }
         
         
         var versions = await context.ModVersions
@@ -288,15 +372,52 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
             .ToListAsync();
         
         
+        var developers = await context.Developers
+            .Where(d => mod.DeveloperIds.Contains(d.Id))
+            .ToListAsync();
+        
+        
         updatedMod.Title = mod.Title;
         updatedMod.Description = mod.Description;
         updatedMod.Versions = versions;
         updatedMod.ModLoaders = loaders;
         updatedMod.Tags = tags;
+        updatedMod.Developers = developers;
         updatedMod.IsClientside = mod.IsClientside;
         updatedMod.Downloads = mod.Downloads;
         updatedMod.Size = mod.Size;
         updatedMod.UpdatedAt = DateTime.UtcNow;
+        
+        
+        if (string.IsNullOrWhiteSpace(mod.Title))
+        {
+            throw new ArgumentException("Title cannot be empty");
+        }
+        
+        if (mod.Title.Length > 100)
+        {
+            throw new ArgumentException("Title is too long (max 100 chars)");
+        }
+        
+        if (mod.Description != null && mod.Description.Length > 1000)
+        {
+            throw new ArgumentException("Description is too long (max 1000 chars)");
+        }
+        
+        if (versions == null || !mod.VersionIds.Any())
+        {
+            throw new ArgumentException("At least one version must be specified");
+        }
+
+        if (loaders == null || !mod.ModLoaderIds.Any())
+        {
+            throw new ArgumentException("At least one mod loader must be specified");
+        }
+
+        if (developers == null || !mod.DeveloperIds.Any())
+        {
+            throw new ArgumentException("At least one developer must be specified");
+        }
         
         
         context.Mods.Update(updatedMod);
@@ -307,6 +428,7 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
             .Include(m => m.Versions)
             .Include(m => m.ModLoaders)
             .Include(m => m.Tags)
+            .Include(m => m.Developers)
             .FirstOrDefaultAsync(m => m.Id == mod.Id);
 
 
@@ -339,6 +461,13 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
                 CreatedAt = t.CreatedAt,
                 UpdatedAt = t.UpdatedAt
             }).ToList(),
+            Developers = updatedMod.Developers.Select(d => new DeveloperDto()
+            {
+                Id = d.Id,
+                Nickname = d.Nickname,
+                CreatedAt = d.CreatedAt,
+                UpdatedAt = d.UpdatedAt
+            }).ToList(),
             CreatedAt = updatedMod.CreatedAt,
             UpdatedAt = updatedMod.UpdatedAt
         };
@@ -348,6 +477,12 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
     public async Task Delete(Guid id)
     {
         Mod? mod = await context.Mods.FindAsync(id);
+
+        if (mod == null)
+        {
+            throw new KeyNotFoundException($"Mod with id {id} not found");
+        }
+        
         context.Mods.Remove(mod);
         await context.SaveChangesAsync();
     }

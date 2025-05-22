@@ -56,6 +56,12 @@ public class DifficultyRepository(ApplicationContext context) : IRepository<Diff
     public async Task<DifficultyDto> GetById(Guid id)
     {
         Difficulty? difficulty = await context.Difficulties.FindAsync(id);
+        
+        
+        if (difficulty == null)
+        {
+            throw new KeyNotFoundException($"Difficulty with id {id} not found");
+        }
 
 
         return new DifficultyDto()
@@ -78,6 +84,17 @@ public class DifficultyRepository(ApplicationContext context) : IRepository<Diff
         };
         
         
+        if (string.IsNullOrWhiteSpace(difficulty.Title))
+        {
+            throw new ArgumentException("Title cannot be empty");
+        }
+        
+        if (difficulty.Title.Length > 100)
+        {
+            throw new ArgumentException("Title is too long (max 100 chars)");
+        }
+        
+        
         context.Difficulties.Add(createdDifficulty);
         await context.SaveChangesAsync();
 
@@ -97,8 +114,25 @@ public class DifficultyRepository(ApplicationContext context) : IRepository<Diff
         Difficulty? updatedDifficulty = await context.Difficulties.FindAsync(difficulty.Id);
         
         
+        if (updatedDifficulty == null)
+        {
+            throw new KeyNotFoundException($"Difficulty with id {difficulty.Id} not found");
+        }
+        
+        
         updatedDifficulty.Title = difficulty.Title;
         updatedDifficulty.UpdatedAt = DateTime.UtcNow;
+        
+        
+        if (string.IsNullOrWhiteSpace(difficulty.Title))
+        {
+            throw new ArgumentException("Title cannot be empty");
+        }
+        
+        if (difficulty.Title.Length > 100)
+        {
+            throw new ArgumentException("Title is too long (max 100 chars)");
+        }
         
         
         context.Difficulties.Update(updatedDifficulty);
@@ -118,6 +152,12 @@ public class DifficultyRepository(ApplicationContext context) : IRepository<Diff
     public async Task Delete(Guid id)
     {
         Difficulty? difficulty = await context.Difficulties.FindAsync(id);
+        
+        if (difficulty == null)
+        {
+            throw new KeyNotFoundException($"Difficulty with id {id} not found");
+        }
+        
         context.Difficulties.Remove(difficulty);
         await context.SaveChangesAsync();
     }

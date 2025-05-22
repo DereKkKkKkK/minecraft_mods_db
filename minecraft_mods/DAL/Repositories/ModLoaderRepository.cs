@@ -57,6 +57,12 @@ public class ModLoaderRepository(ApplicationContext context) : IRepository<ModLo
     {
         ModLoader? modLoader = await context.ModLoaders.FindAsync(id);
 
+        
+        if (modLoader == null)
+        {
+            throw new KeyNotFoundException($"Mod loader with id {id} not found");
+        }
+        
 
         return new ModLoaderDto()
         {
@@ -78,6 +84,17 @@ public class ModLoaderRepository(ApplicationContext context) : IRepository<ModLo
         };
         
         
+        if (string.IsNullOrWhiteSpace(modLoader.Title))
+        {
+            throw new ArgumentException("Title cannot be empty");
+        }
+        
+        if (modLoader.Title.Length > 100)
+        {
+            throw new ArgumentException("Title is too long (max 100 chars)");
+        }
+        
+        
         context.ModLoaders.Add(createdModLoader);
         await context.SaveChangesAsync();
 
@@ -97,8 +114,25 @@ public class ModLoaderRepository(ApplicationContext context) : IRepository<ModLo
         ModLoader? updatedModLoader = await context.ModLoaders.FindAsync(modLoader.Id);
         
         
+        if (updatedModLoader == null)
+        {
+            throw new KeyNotFoundException($"Mod loader with id {modLoader.Id} not found");
+        }
+        
+        
         updatedModLoader.Title = modLoader.Title;
         updatedModLoader.UpdatedAt = DateTime.UtcNow;
+        
+        
+        if (string.IsNullOrWhiteSpace(modLoader.Title))
+        {
+            throw new ArgumentException("Title cannot be empty");
+        }
+        
+        if (modLoader.Title.Length > 100)
+        {
+            throw new ArgumentException("Title is too long (max 100 chars)");
+        }
         
         
         context.ModLoaders.Update(updatedModLoader);
@@ -118,6 +152,12 @@ public class ModLoaderRepository(ApplicationContext context) : IRepository<ModLo
     public async Task Delete(Guid id)
     {
         ModLoader? modLoader = await context.ModLoaders.FindAsync(id);
+        
+        if (modLoader == null)
+        {
+            throw new KeyNotFoundException($"Mod loader with id {id} not found");
+        }
+        
         context.ModLoaders.Remove(modLoader);
         await context.SaveChangesAsync();
     }

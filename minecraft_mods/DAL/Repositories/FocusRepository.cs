@@ -57,6 +57,12 @@ public class FocusRepository(ApplicationContext context) : IRepository<FocusDto,
     {
         Focus? focus = await context.Focuses.FindAsync(id);
 
+        
+        if (focus == null)
+        {
+            throw new KeyNotFoundException($"Focus with id {id} not found");
+        }
+        
 
         return new FocusDto()
         {
@@ -78,6 +84,17 @@ public class FocusRepository(ApplicationContext context) : IRepository<FocusDto,
         };
         
         
+        if (string.IsNullOrWhiteSpace(focus.Name))
+        {
+            throw new ArgumentException("Name cannot be empty");
+        }
+        
+        if (focus.Name.Length > 100)
+        {
+            throw new ArgumentException("Name is too long (max 100 chars)");
+        }
+        
+        
         context.Focuses.Add(createdFocus);
         await context.SaveChangesAsync();
 
@@ -97,8 +114,25 @@ public class FocusRepository(ApplicationContext context) : IRepository<FocusDto,
         Focus? updatedFocus = await context.Focuses.FindAsync(focus.Id);
         
         
+        if (updatedFocus == null)
+        {
+            throw new KeyNotFoundException($"Focus with id {focus.Id} not found");
+        }
+        
+        
         updatedFocus.Name = focus.Name;
         updatedFocus.UpdatedAt = DateTime.UtcNow;
+        
+        
+        if (string.IsNullOrWhiteSpace(focus.Name))
+        {
+            throw new ArgumentException("Name cannot be empty");
+        }
+        
+        if (focus.Name.Length > 100)
+        {
+            throw new ArgumentException("Name is too long (max 100 chars)");
+        }
         
         
         context.Focuses.Update(updatedFocus);
@@ -118,6 +152,12 @@ public class FocusRepository(ApplicationContext context) : IRepository<FocusDto,
     public async Task Delete(Guid id)
     {
         Focus? focus = await context.Focuses.FindAsync(id);
+        
+        if (focus == null)
+        {
+            throw new KeyNotFoundException($"Focus with id {id} not found");
+        }
+        
         context.Focuses.Remove(focus);
         await context.SaveChangesAsync();
     }

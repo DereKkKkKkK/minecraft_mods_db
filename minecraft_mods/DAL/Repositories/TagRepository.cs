@@ -57,6 +57,12 @@ public class TagRepository(ApplicationContext context) : IRepository<TagDto, Cre
     public async Task<TagDto> GetById(Guid id)
     {
         Tag? tag = await context.Tags.FindAsync(id);
+        
+        
+        if (tag == null)
+        {
+            throw new KeyNotFoundException($"Tag with id {id} not found");
+        }
 
 
         return new TagDto()
@@ -79,6 +85,17 @@ public class TagRepository(ApplicationContext context) : IRepository<TagDto, Cre
         };
         
         
+        if (string.IsNullOrWhiteSpace(tag.Title))
+        {
+            throw new ArgumentException("Title cannot be empty");
+        }
+        
+        if (tag.Title.Length > 100)
+        {
+            throw new ArgumentException("Title is too long (max 100 chars)");
+        }
+        
+        
         context.Tags.Add(createdTag);
         await context.SaveChangesAsync();
 
@@ -98,8 +115,25 @@ public class TagRepository(ApplicationContext context) : IRepository<TagDto, Cre
         Tag? updatedTag = await context.Tags.FindAsync(tag.Id);
         
         
+        if (updatedTag == null)
+        {
+            throw new KeyNotFoundException($"Tag with id {tag.Id} not found");
+        }
+        
+        
         updatedTag.Title = tag.Title;
         updatedTag.UpdatedAt = DateTime.UtcNow;
+        
+        
+        if (string.IsNullOrWhiteSpace(tag.Title))
+        {
+            throw new ArgumentException("Title cannot be empty");
+        }
+        
+        if (tag.Title.Length > 100)
+        {
+            throw new ArgumentException("Title is too long (max 100 chars)");
+        }
         
         
         context.Tags.Update(updatedTag);
@@ -119,6 +153,12 @@ public class TagRepository(ApplicationContext context) : IRepository<TagDto, Cre
     public async Task Delete(Guid id)
     {
         Tag? tag = await context.Tags.FindAsync(id);
+        
+        if (tag == null)
+        {
+            throw new KeyNotFoundException($"Tag with id {id} not found");
+        }
+        
         context.Tags.Remove(tag);
         await context.SaveChangesAsync();
     }

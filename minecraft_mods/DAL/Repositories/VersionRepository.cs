@@ -57,6 +57,12 @@ public class VersionRepository(ApplicationContext context) : IRepository<ModVers
     {
         ModVersion? mod_version = await context.ModVersions.FindAsync(id);
 
+        
+        if (mod_version == null)
+        {
+            throw new KeyNotFoundException($"Version with id {id} not found");
+        }
+        
 
         return new ModVersionDto()
         {
@@ -78,6 +84,17 @@ public class VersionRepository(ApplicationContext context) : IRepository<ModVers
         };
         
         
+        if (string.IsNullOrWhiteSpace(mod_version.Title))
+        {
+            throw new ArgumentException("Title cannot be empty");
+        }
+        
+        if (mod_version.Title.Length > 100)
+        {
+            throw new ArgumentException("Title is too long (max 100 chars)");
+        }
+        
+        
         context.ModVersions.Add(createdVersion);
         await context.SaveChangesAsync();
 
@@ -97,8 +114,25 @@ public class VersionRepository(ApplicationContext context) : IRepository<ModVers
         ModVersion? updatedVersion = await context.ModVersions.FindAsync(mod_version.Id);
         
         
+        if (updatedVersion == null)
+        {
+            throw new KeyNotFoundException($"Version with id {mod_version.Id} not found");
+        }
+        
+        
         updatedVersion.Title = mod_version.Title;
         updatedVersion.UpdatedAt = DateTime.UtcNow;
+        
+        
+        if (string.IsNullOrWhiteSpace(mod_version.Title))
+        {
+            throw new ArgumentException("Title cannot be empty");
+        }
+        
+        if (mod_version.Title.Length > 100)
+        {
+            throw new ArgumentException("Title is too long (max 100 chars)");
+        }
         
         
         context.ModVersions.Update(updatedVersion);
@@ -118,6 +152,12 @@ public class VersionRepository(ApplicationContext context) : IRepository<ModVers
     public async Task Delete(Guid id)
     {
         ModVersion? version = await context.ModVersions.FindAsync(id);
+        
+        if (version == null)
+        {
+            throw new KeyNotFoundException($"Version with id {id} not found");
+        }
+        
         context.ModVersions.Remove(version);
         await context.SaveChangesAsync();
     }

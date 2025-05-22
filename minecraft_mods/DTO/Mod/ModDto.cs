@@ -1,4 +1,5 @@
-﻿using DTO.ModLoader;
+﻿using DTO.Developer;
+using DTO.ModLoader;
 using DTO.ModVersion;
 using DTO.Tag;
 
@@ -15,6 +16,7 @@ public class ModDto
     public List<ModVersionDto> Versions { get; set; } = new();
     public List<ModLoaderDto> ModLoaders { get; set; } = new();
     public List<TagDto> Tags { get; set; } = new();
+    public List<DeveloperDto> Developers { get; set; } = new();
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 }
