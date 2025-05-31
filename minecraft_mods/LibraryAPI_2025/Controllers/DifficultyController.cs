@@ -2,6 +2,7 @@
 using DAL.Interfaces;
 using DTO.Difficulty;
 using DTO.Shared;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryAPI_2025.Controllers;
@@ -33,10 +34,12 @@ public class DifficultyController(IService<DifficultyDto, CreateDifficultyDto, U
     public async Task<ActionResult<DifficultyDto>> GetById(Guid id) => Ok(await service.GetById(id));
     
     
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<DifficultyDto>> Create([FromBody] CreateDifficultyDto difficulty) => Ok(await service.Create(difficulty));
     
     
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<ActionResult<DifficultyDto>> Update(Guid id, [FromBody] UpdateDifficultyDto difficulty)
     {
@@ -46,6 +49,7 @@ public class DifficultyController(IService<DifficultyDto, CreateDifficultyDto, U
     }
     
     
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(Guid id)
     {

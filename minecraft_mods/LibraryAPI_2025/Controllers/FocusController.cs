@@ -2,6 +2,7 @@
 using DAL.Interfaces;
 using DTO.Focus;
 using DTO.Shared;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 namespace LibraryAPI_2025.Controllers;
 
@@ -33,10 +34,12 @@ public class FocusController(IService<FocusDto, CreateFocusDto, UpdateFocusDto> 
     public async Task<ActionResult<FocusDto>> GetById(Guid id) => Ok(await service.GetById(id));
     
     
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<FocusDto>> Create([FromBody] CreateFocusDto focus) => Ok(await service.Create(focus));
     
     
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<ActionResult<FocusDto>> Update(Guid id, [FromBody] UpdateFocusDto focus)
     {
@@ -46,6 +49,7 @@ public class FocusController(IService<FocusDto, CreateFocusDto, UpdateFocusDto> 
     }
     
     
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(Guid id)
     {

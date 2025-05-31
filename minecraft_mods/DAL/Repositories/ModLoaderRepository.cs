@@ -69,7 +69,7 @@ public class ModLoaderRepository(ApplicationContext context) : IRepository<ModLo
             Id = modLoader.Id,
             Title = modLoader.Title,
             CreatedAt = modLoader.CreatedAt,
-            UpdatedAt = modLoader.UpdatedAt,
+            UpdatedAt = modLoader.UpdatedAt
         };
     }
 

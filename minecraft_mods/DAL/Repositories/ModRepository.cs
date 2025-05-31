@@ -291,14 +291,6 @@ public class ModRepository(ApplicationContext context) : IRepository<ModDto, Cre
         await context.SaveChangesAsync();
         
         
-        createdMod = await context.Mods
-            .Include(m => m.Versions)
-            .Include(m => m.ModLoaders)
-            .Include(m => m.Tags)
-            .Include(m => m.Developers)
-            .FirstOrDefaultAsync(m => m.Id == createdMod.Id);
-
-
         return new ModDto()
         {
             Id = createdMod.Id,

@@ -1098,3 +1098,16 @@ C:\Users\kapi\Desktop\sosalNew\minecraft_mods_db\minecraft_mods\LibraryAPI_2025\
 C:\Users\kapi\Desktop\sosalNew\minecraft_mods_db\minecraft_mods\LibraryAPI_2025\obj\Debug\net9.0\LibraryAPI_2025.genruntimeconfig.cache
 C:\Users\kapi\Desktop\sosalNew\minecraft_mods_db\minecraft_mods\LibraryAPI_2025\obj\Debug\net9.0\ref\LibraryAPI_2025.dll
 E:\All Files\minecraft_repos\minecraft_mods_db\minecraft_mods\LibraryAPI_2025\bin\Debug\net9.0\System.Linq.Dynamic.Core.dll
+E:\All Files\minecraft_repos\minecraft_mods_db\minecraft_mods\LibraryAPI_2025\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+E:\All Files\minecraft_repos\minecraft_mods_db\minecraft_mods\LibraryAPI_2025\bin\Debug\net9.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+E:\All Files\minecraft_repos\minecraft_mods_db\minecraft_mods\LibraryAPI_2025\bin\Debug\net9.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+E:\All Files\minecraft_repos\minecraft_mods_db\minecraft_mods\LibraryAPI_2025\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+E:\All Files\minecraft_repos\minecraft_mods_db\minecraft_mods\LibraryAPI_2025\bin\Debug\net9.0\Microsoft.Extensions.Identity.Core.dll
+E:\All Files\minecraft_repos\minecraft_mods_db\minecraft_mods\LibraryAPI_2025\bin\Debug\net9.0\Microsoft.Extensions.Identity.Stores.dll
+E:\All Files\minecraft_repos\minecraft_mods_db\minecraft_mods\LibraryAPI_2025\bin\Debug\net9.0\Microsoft.IdentityModel.Abstractions.dll
+E:\All Files\minecraft_repos\minecraft_mods_db\minecraft_mods\LibraryAPI_2025\bin\Debug\net9.0\Microsoft.IdentityModel.JsonWebTokens.dll
+E:\All Files\minecraft_repos\minecraft_mods_db\minecraft_mods\LibraryAPI_2025\bin\Debug\net9.0\Microsoft.IdentityModel.Logging.dll
+E:\All Files\minecraft_repos\minecraft_mods_db\minecraft_mods\LibraryAPI_2025\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.dll
+E:\All Files\minecraft_repos\minecraft_mods_db\minecraft_mods\LibraryAPI_2025\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+E:\All Files\minecraft_repos\minecraft_mods_db\minecraft_mods\LibraryAPI_2025\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
+E:\All Files\minecraft_repos\minecraft_mods_db\minecraft_mods\LibraryAPI_2025\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll

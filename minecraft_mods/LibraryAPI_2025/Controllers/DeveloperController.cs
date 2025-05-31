@@ -2,6 +2,7 @@
 using DAL.Interfaces;
 using DTO.Developer;
 using DTO.Shared;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,10 +35,12 @@ public class DeveloperController(IService<DeveloperDto, CreateDeveloperDto, Upda
     public async Task<ActionResult<DeveloperDto>> GetById(Guid id) => Ok(await service.GetById(id));
     
     
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<DeveloperDto>> Create([FromBody] CreateDeveloperDto developer) => Ok(await service.Create(developer));
     
     
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<ActionResult<DeveloperDto>> Update(Guid id, [FromBody] UpdateDeveloperDto developer)
     {
@@ -47,6 +50,7 @@ public class DeveloperController(IService<DeveloperDto, CreateDeveloperDto, Upda
     }
     
     
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(Guid id)
     {

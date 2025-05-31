@@ -69,7 +69,7 @@ public class DeveloperRepository(ApplicationContext context) : IRepository<Devel
             Id = developer.Id,
             Nickname = developer.Nickname,
             CreatedAt = developer.CreatedAt,
-            UpdatedAt = developer.UpdatedAt,
+            UpdatedAt = developer.UpdatedAt
         };
     }
 
@@ -104,7 +104,7 @@ public class DeveloperRepository(ApplicationContext context) : IRepository<Devel
             Id = createdDeveloper.Id,
             Nickname = createdDeveloper.Nickname,
             CreatedAt = createdDeveloper.CreatedAt,
-            UpdatedAt = createdDeveloper.UpdatedAt,
+            UpdatedAt = createdDeveloper.UpdatedAt
         };
     }
 

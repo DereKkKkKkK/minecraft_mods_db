@@ -1,9 +1,10 @@
 using DAL.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.EF;
 
-public class ApplicationContext : DbContext
+public class ApplicationContext : IdentityDbContext<User>
 {
     public DbSet<Mod> Mods { get; set; }
     public DbSet<Tag> Tags { get; set; }

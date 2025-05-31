@@ -2,6 +2,7 @@
 using DAL.Interfaces;
 using DTO.ModVersion;
 using DTO.Shared;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryAPI_2025.Controllers;
@@ -31,10 +32,12 @@ public class VersionController(IService<ModVersionDto, CreateModVersionDto, Upda
     public async Task<ActionResult<ModVersionDto>> GetById(Guid id) => Ok(await service.GetById(id));
     
     
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<ModVersionDto>> Create([FromBody] CreateModVersionDto version) => Ok(await service.Create(version));
     
     
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<ActionResult<ModVersionDto>> Update(Guid id, [FromBody] UpdateModVersionDto version)
     {
@@ -44,6 +47,7 @@ public class VersionController(IService<ModVersionDto, CreateModVersionDto, Upda
     }
     
     
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(Guid id)
     {

@@ -2,6 +2,7 @@
 using DAL.Interfaces;
 using DTO.Mod;
 using DTO.Shared;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 namespace LibraryAPI_2025.Controllers;
 
@@ -33,10 +34,12 @@ public class ModController(IService<ModDto, CreateModDto, UpdateModDto> service)
     public async Task<ActionResult<ModDto>> GetById(Guid id) => Ok(await service.GetById(id));
     
     
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<ModDto>> Create([FromBody] CreateModDto mod) => Ok(await service.Create(mod));
     
     
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<ActionResult<ModDto>> Update(Guid id, [FromBody] UpdateModDto mod)
     {
@@ -46,6 +49,7 @@ public class ModController(IService<ModDto, CreateModDto, UpdateModDto> service)
     }
     
     
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(Guid id)
     {

@@ -2,6 +2,7 @@
 using DAL.Interfaces;
 using DTO.Shared;
 using DTO.Tag;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryAPI_2025.Controllers;
@@ -32,10 +33,12 @@ public class TagController(IService<TagDto, CreateTagDto, UpdateTagDto> service)
     public async Task<ActionResult<TagDto>> GetById(Guid id) => Ok(await service.GetById(id));
     
     
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<TagDto>> Create([FromBody] CreateTagDto tag) => Ok(await service.Create(tag));
     
     
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<ActionResult<TagDto>> Update(Guid id, [FromBody] UpdateTagDto tag)
     {
@@ -45,6 +48,7 @@ public class TagController(IService<TagDto, CreateTagDto, UpdateTagDto> service)
     }
     
     
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(Guid id)
     {

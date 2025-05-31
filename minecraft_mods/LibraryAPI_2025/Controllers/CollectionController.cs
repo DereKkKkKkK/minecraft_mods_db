@@ -2,6 +2,7 @@
 using DAL.Interfaces;
 using DTO.Collection;
 using DTO.Shared;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 namespace LibraryAPI_2025.Controllers;
 
@@ -33,10 +34,12 @@ public class CollectionController(IService<CollectionDto, CreateCollectionDto, U
     public async Task<ActionResult<CollectionDto>> GetById(Guid id) => Ok(await service.GetById(id));
     
     
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<CollectionDto>> Create([FromBody] CreateCollectionDto collection) => Ok(await service.Create(collection));
     
     
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<ActionResult<CollectionDto>> Update(Guid id, [FromBody] UpdateCollectionDto collection)
     {
@@ -46,6 +49,7 @@ public class CollectionController(IService<CollectionDto, CreateCollectionDto, U
     }
     
     
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(Guid id)
     {
